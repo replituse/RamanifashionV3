@@ -297,7 +297,7 @@ export default function Home() {
             <div className="relative w-full" style={{ paddingBottom: '42%' }}>
               <iframe
                 className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/dlCJY6x-xtI?si=CEom1zf9jhKksCJC"
+                src="https://www.youtube.com/embed/dlCJY6x-xtI?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=dlCJY6x-xtI"
                 title="Ramani Fashion Collection"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
