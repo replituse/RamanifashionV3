@@ -447,13 +447,13 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-              <Card className="lg:col-span-3 border shadow-sm" data-testid="card-contact-form">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold mb-6 text-foreground">
+              <Card className="lg:col-span-3 border shadow-sm h-full" data-testid="card-contact-form">
+                <CardContent className="p-8 h-full flex flex-col">
+                  <h3 className="text-2xl font-bold mb-8 text-foreground">
                     Send Us a Message
                   </h3>
                   <Form {...contactForm}>
-                    <form onSubmit={contactForm.handleSubmit(onContactSubmit)} className="space-y-4">
+                    <form onSubmit={contactForm.handleSubmit(onContactSubmit)} className="space-y-6 flex-1 flex flex-col">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={contactForm.control}
@@ -564,12 +564,12 @@ export default function Home() {
                         control={contactForm.control}
                         name="message"
                         render={({ field }) => (
-                          <FormItem>
+                          <FormItem className="flex-1 flex flex-col">
                             <FormLabel>Message</FormLabel>
                             <FormControl>
                               <Textarea 
                                 placeholder="Tell us more about your inquiry..."
-                                className="min-h-[80px]"
+                                className="min-h-[200px] flex-1 resize-none"
                                 {...field}
                                 data-testid="textarea-message"
                               />
@@ -579,21 +579,23 @@ export default function Home() {
                         )}
                       />
 
-                      <Button 
-                        type="submit" 
-                        disabled={isSubmitting}
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 text-base"
-                        data-testid="button-submit"
-                      >
-                        {isSubmitting ? (
-                          "Sending..."
-                        ) : (
-                          <>
-                            <Send className="w-5 h-5 mr-2" />
-                            Send Message
-                          </>
-                        )}
-                      </Button>
+                      <div className="pt-2">
+                        <Button 
+                          type="submit" 
+                          disabled={isSubmitting}
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 text-base"
+                          data-testid="button-submit"
+                        >
+                          {isSubmitting ? (
+                            "Sending..."
+                          ) : (
+                            <>
+                              <Send className="w-5 h-5 mr-2" />
+                              Send Message
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </form>
                   </Form>
                 </CardContent>
