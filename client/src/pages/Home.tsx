@@ -216,35 +216,40 @@ export default function Home() {
       <main>
         <HeroCarousel />
 
-        <section className="max-w-7xl mx-auto px-4 py-12">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold font-serif" data-testid="text-section-new-arrivals-home">
-              New Arrival
-            </h2>
-            <button
-              onClick={() => setLocation("/new-arrivals")}
-              className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-              data-testid="button-view-all-new-arrivals"
-            >
-              View All
-            </button>
-          </div>
-          <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
-            <div className="flex gap-4 pb-4">
-              {newArrivals.slice(0, 6).map((product: any) => (
-                <NewArrivalCard
-                  key={product._id}
-                  id={product._id}
-                  name={product.name}
-                  image={product.images?.[0] || "/placeholder.jpg"}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  discount={product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0}
-                  rating={product.rating}
-                  reviewCount={product.reviewCount}
-                  onClick={() => setLocation(`/product/${product._id}`)}
-                />
-              ))}
+        <section className="bg-pink-50/30 py-12">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-center justify-between mb-8">
+              <div className="relative">
+                <h2 className="text-3xl font-bold font-serif" data-testid="text-section-new-arrivals-home">
+                  New Arrival
+                </h2>
+                <div className="absolute -bottom-2 left-0 w-24 h-1 bg-gradient-to-r from-pink-300 via-pink-200 to-transparent rounded-full"></div>
+              </div>
+              <button
+                onClick={() => setLocation("/new-arrivals")}
+                className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                data-testid="button-view-all-new-arrivals"
+              >
+                View All
+              </button>
+            </div>
+            <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
+              <div className="flex gap-4 pb-4">
+                {newArrivals.slice(0, 6).map((product: any) => (
+                  <NewArrivalCard
+                    key={product._id}
+                    id={product._id}
+                    name={product.name}
+                    image={product.images?.[0] || "/placeholder.jpg"}
+                    price={product.price}
+                    originalPrice={product.originalPrice}
+                    discount={product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0}
+                    rating={product.rating}
+                    reviewCount={product.reviewCount}
+                    onClick={() => setLocation(`/product/${product._id}`)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>
