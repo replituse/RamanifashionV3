@@ -292,6 +292,23 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="max-w-7xl mx-auto px-4 py-8">
+          <div className="w-full overflow-hidden rounded-lg bg-black">
+            <div className="relative w-full" style={{ paddingBottom: '42%' }}>
+              <iframe
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/dlCJY6x-xtI?si=CEom1zf9jhKksCJC"
+                title="Ramani Fashion Collection"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                data-testid="video-banner"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+
         <section className="max-w-7xl mx-auto px-4 py-12">
           <h2 className="text-3xl font-bold text-center mb-12" data-testid="text-section-categories">
             Shop by Category

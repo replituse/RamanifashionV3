@@ -1,4 +1,4 @@
-import { ShoppingBag, Heart, User, Search, Menu, LogOut } from "lucide-react";
+import { ShoppingBag, Heart, User, Search, Menu, LogOut, ChevronDown } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import instagramIcon from "@assets/instagram_1762445939344.png";
 import facebookIcon from "@assets/communication_1762445935759.png";
@@ -16,6 +16,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import logoImage from "@assets/PNG__B_ LOGO_1762442171742.png";
 
 interface HeaderProps {
@@ -189,16 +196,104 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
         </div>
       </div>
 
-      <nav className="hidden md:block bg-white">
+      <nav className="hidden md:block bg-white border-t">
         <div className="max-w-7xl mx-auto px-4">
-          <ul className="flex items-center justify-center gap-12 py-2 text-base font-medium">
-            <li><a href="/" className="hover-elevate px-4 py-2 rounded-md tracking-wide" data-testid="link-home">HOME</a></li>
-            <li><a href="/new-arrivals" className="hover-elevate px-4 py-2 rounded-md tracking-wide" data-testid="link-new-arrivals">NEW ARRIVALS</a></li>
-            <li><a href="/categories" className="hover-elevate px-4 py-2 rounded-md tracking-wide" data-testid="link-categories">CATEGORIES</a></li>
-            <li><a href="/sale" className="text-destructive hover-elevate px-4 py-2 rounded-md tracking-wide" data-testid="link-sale">SALE</a></li>
-            <li><a href="/about" className="hover-elevate px-4 py-2 rounded-md tracking-wide" data-testid="link-about">ABOUT US</a></li>
-            <li><a href="/#contact" className="hover-elevate px-4 py-2 rounded-md tracking-wide" data-testid="link-contact">CONTACT</a></li>
-          </ul>
+          <NavigationMenu className="mx-auto">
+            <NavigationMenuList className="flex items-center justify-center gap-8 py-2">
+              <NavigationMenuItem>
+                <a href="/" className="hover-elevate px-4 py-2 rounded-md tracking-wide text-base font-medium" data-testid="link-home">HOME</a>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <a href="/new-arrivals" className="hover-elevate px-4 py-2 rounded-md tracking-wide text-base font-medium" data-testid="link-new-arrivals">NEW ARRIVALS</a>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="hover-elevate px-4 py-2 rounded-md tracking-wide text-base font-medium" data-testid="link-trending-collection">
+                  TRENDING COLLECTION
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="w-[300px] p-4">
+                    <ul className="grid gap-2">
+                      <li>
+                        <a
+                          href="/products?category=Jamdani Paithani"
+                          className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          data-testid="category-jamdani-paithani"
+                        >
+                          <div className="text-sm font-medium leading-none">Jamdani Paithani</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="/products?category=Khun Irkal"
+                          className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          data-testid="category-khun-irkal"
+                        >
+                          <div className="text-sm font-medium leading-none">Khun / Irkal (Ilkal)</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="/products?category=Ajrakh Modal"
+                          className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          data-testid="category-ajrakh-modal"
+                        >
+                          <div className="text-sm font-medium leading-none">Ajrakh Modal</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="/products?category=Mul Mul Cotton"
+                          className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          data-testid="category-mul-mul-cotton"
+                        >
+                          <div className="text-sm font-medium leading-none">Mul Mul Cotton</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="/products?category=Khadi Cotton"
+                          className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          data-testid="category-khadi-cotton"
+                        >
+                          <div className="text-sm font-medium leading-none">Khadi Cotton</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="/products?category=Patch Work"
+                          className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          data-testid="category-patch-work"
+                        >
+                          <div className="text-sm font-medium leading-none">Patch Work</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="/products?category=Pure Linen"
+                          className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          data-testid="category-pure-linen"
+                        >
+                          <div className="text-sm font-medium leading-none">Pure Linen</div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <a href="/categories" className="hover-elevate px-4 py-2 rounded-md tracking-wide text-base font-medium" data-testid="link-categories">CATEGORIES</a>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <a href="/sale" className="text-destructive hover-elevate px-4 py-2 rounded-md tracking-wide text-base font-medium" data-testid="link-sale">SALE</a>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <a href="/about" className="hover-elevate px-4 py-2 rounded-md tracking-wide text-base font-medium" data-testid="link-about">ABOUT US</a>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <a href="/#contact" className="hover-elevate px-4 py-2 rounded-md tracking-wide text-base font-medium" data-testid="link-contact">CONTACT</a>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
       </nav>
     </header>
