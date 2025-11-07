@@ -219,7 +219,7 @@ export default function Home() {
         <section className="py-12" style={{ backgroundColor: 'rgba(250, 220, 235, 0.7)' }}>
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold font-serif" data-testid="text-section-new-arrivals-home">
+              <h2 className="text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-8 py-3 inline-block" data-testid="text-section-new-arrivals-home">
                 New Arrival
               </h2>
               <button
@@ -264,7 +264,7 @@ export default function Home() {
         <section className="py-12" style={{ backgroundColor: 'rgba(250, 220, 235, 0.7)' }}>
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold font-serif" data-testid="text-section-trending-collection">
+              <h2 className="text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-8 py-3 inline-block" data-testid="text-section-trending-collection">
                 Trending Collection
               </h2>
               <button
