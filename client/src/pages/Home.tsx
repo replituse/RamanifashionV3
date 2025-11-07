@@ -181,11 +181,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full overflow-hidden py-8 bg-background">
+        <section className="w-full overflow-hidden py-16 bg-background">
           <div className="relative flex">
-            <div className="flex animate-scroll-left">
-              <img src={scrollSvg} alt="Decorative scroll" className="h-24 md:h-32 w-auto" />
-              <img src={scrollSvg} alt="Decorative scroll" className="h-24 md:h-32 w-auto" />
+            <div className="flex animate-scroll-left gap-0">
+              <img src={scrollSvg} alt="Decorative scroll" className="h-64 md:h-96 lg:h-[500px] w-auto flex-shrink-0" />
+              <img src={scrollSvg} alt="Decorative scroll" className="h-64 md:h-96 lg:h-[500px] w-auto flex-shrink-0" />
+              <img src={scrollSvg} alt="Decorative scroll" className="h-64 md:h-96 lg:h-[500px] w-auto flex-shrink-0" />
+              <img src={scrollSvg} alt="Decorative scroll" className="h-64 md:h-96 lg:h-[500px] w-auto flex-shrink-0" />
             </div>
           </div>
         </section>
