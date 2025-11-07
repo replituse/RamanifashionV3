@@ -16,11 +16,14 @@ export default function Login() {
   const [, setLocation] = useLocation();
   const [isRegister, setIsRegister] = useState(false);
   const [isAdminLogin, setIsAdminLogin] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
+    otp: "",
   });
 
   const loginMutation = useMutation({
@@ -64,15 +67,71 @@ export default function Login() {
     },
   });
 
+  const sendOtpMutation = useMutation({
+    mutationFn: (phone: string) => apiRequest("/api/auth/send-otp", "POST", { phone }),
+    onSuccess: (data: any) => {
+      setOtpSent(true);
+      toast({ 
+        title: "OTP Sent!", 
+        description: `OTP: ${data.otp} (For testing only)` 
+      });
+    },
+    onError: (error: any) => {
+      toast({ title: "Error", description: error.message || "Failed to send OTP", variant: "destructive" });
+    },
+  });
+
+  const verifyOtpMutation = useMutation({
+    mutationFn: (data: { phone: string; otp: string }) => apiRequest("/api/auth/verify-otp", "POST", data),
+    onSuccess: () => {
+      setOtpVerified(true);
+      toast({ title: "OTP Verified!", description: "You can now proceed with login/registration" });
+    },
+    onError: (error: any) => {
+      toast({ title: "Error", description: error.message || "Invalid OTP", variant: "destructive" });
+    },
+  });
+
+  const handleSendOtp = () => {
+    if (!formData.phone) {
+      toast({ title: "Error", description: "Please enter your mobile number", variant: "destructive" });
+      return;
+    }
+    sendOtpMutation.mutate(formData.phone);
+  };
+
+  const handleVerifyOtp = () => {
+    if (!formData.otp) {
+      toast({ title: "Error", description: "Please enter the OTP", variant: "destructive" });
+      return;
+    }
+    verifyOtpMutation.mutate({ phone: formData.phone, otp: formData.otp });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (isAdminLogin) {
       adminLoginMutation.mutate({ username: formData.email, password: formData.password });
-    } else if (isRegister) {
+      return;
+    }
+
+    if (!otpVerified && !isAdminLogin) {
+      toast({ title: "Error", description: "Please verify your mobile number first", variant: "destructive" });
+      return;
+    }
+
+    if (isRegister) {
       registerMutation.mutate(formData);
     } else {
       loginMutation.mutate({ email: formData.email, password: formData.password });
     }
+  };
+
+  const resetOtpState = () => {
+    setOtpSent(false);
+    setOtpVerified(false);
+    setFormData({ ...formData, otp: "" });
   };
 
   return (
@@ -106,6 +165,76 @@ export default function Login() {
                 </div>
               )}
 
+              {!isAdminLogin && (
+                <div>
+                  <Label htmlFor="phone">Mobile Number</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="10-digit mobile number"
+                      value={formData.phone}
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        resetOtpState();
+                      }}
+                      required
+                      disabled={otpVerified}
+                      data-testid="input-phone"
+                    />
+                    {!otpVerified && (
+                      <Button
+                        type="button"
+                        onClick={handleSendOtp}
+                        disabled={sendOtpMutation.isPending || !formData.phone}
+                        data-testid="button-send-otp"
+                      >
+                        {otpSent ? "Resend" : "Send OTP"}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {!isAdminLogin && otpSent && !otpVerified && (
+                <div>
+                  <Label htmlFor="otp">Enter OTP</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="otp"
+                      type="text"
+                      placeholder="Enter 6-digit OTP"
+                      value={formData.otp}
+                      onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
+                      maxLength={6}
+                      data-testid="input-otp"
+                    />
+                    <Button
+                      type="button"
+                      onClick={handleVerifyOtp}
+                      disabled={verifyOtpMutation.isPending || !formData.otp}
+                      data-testid="button-verify-otp"
+                    >
+                      Verify
+                    </Button>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Test OTP: 123456
+                  </p>
+                </div>
+              )}
+
+              {!isAdminLogin && otpVerified && (
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3">
+                  <p className="text-sm text-green-700 dark:text-green-400 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Mobile number verified successfully
+                  </p>
+                </div>
+              )}
+
               <div>
                 <Label htmlFor="email">{isAdminLogin ? "Admin Username" : "Email"}</Label>
                 <Input
@@ -130,19 +259,6 @@ export default function Login() {
                 />
               </div>
 
-              {!isAdminLogin && isRegister && (
-                <div>
-                  <Label htmlFor="phone">Phone Number (Optional)</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    data-testid="input-phone"
-                  />
-                </div>
-              )}
-
               <Button
                 type="submit"
                 className="w-full"
@@ -157,7 +273,10 @@ export default function Login() {
                   <Button
                     type="button"
                     variant="link"
-                    onClick={() => setIsRegister(!isRegister)}
+                    onClick={() => {
+                      setIsRegister(!isRegister);
+                      resetOtpState();
+                    }}
                     data-testid="button-toggle-mode"
                   >
                     {isRegister ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
@@ -172,7 +291,8 @@ export default function Login() {
                   onClick={() => {
                     setIsAdminLogin(!isAdminLogin);
                     setIsRegister(false);
-                    setFormData({ name: "", email: "", password: "", phone: "" });
+                    setFormData({ name: "", email: "", password: "", phone: "", otp: "" });
+                    resetOtpState();
                   }}
                   data-testid="button-admin-toggle"
                   className="w-full"
