@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { connectDB } from "./db";
-import { Product, User, Cart, Wishlist, Order, Address } from "./models";
+import { Product, User, Cart, Wishlist, Order, Address, ContactSubmission } from "./models";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -503,6 +503,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const occasions = await Product.distinct('occasion');
 
       res.json({ categories, fabrics, colors, occasions });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Contact Form Routes
+  app.post("/api/contact", async (req, res) => {
+    try {
+      const { name, mobile, email, subject, category, message } = req.body;
+
+      if (!name || !mobile || !email || !subject || !category) {
+        return res.status(400).json({ error: 'All required fields must be filled' });
+      }
+
+      const contactSubmission = new ContactSubmission({
+        name,
+        mobile,
+        email,
+        subject,
+        category,
+        message: message || ''
+      });
+
+      await contactSubmission.save();
+      res.status(201).json({ 
+        message: 'Contact form submitted successfully',
+        submission: contactSubmission 
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/contact", async (req, res) => {
+    try {
+      const submissions = await ContactSubmission.find()
+        .sort({ createdAt: -1 })
+        .lean();
+      res.json(submissions);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

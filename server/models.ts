@@ -111,6 +111,17 @@ const orderSchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
+// Contact Submission Schema
+const contactSubmissionSchema = new Schema({
+  name: { type: String, required: true },
+  mobile: { type: String, required: true },
+  email: { type: String, required: true },
+  subject: { type: String, required: true },
+  category: { type: String, required: true },
+  message: { type: String },
+  createdAt: { type: Date, default: Date.now },
+});
+
 // Export models
 export const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
@@ -118,3 +129,4 @@ export const Address = mongoose.models.Address || mongoose.model('Address', addr
 export const Cart = mongoose.models.Cart || mongoose.model('Cart', cartSchema);
 export const Wishlist = mongoose.models.Wishlist || mongoose.model('Wishlist', wishlistSchema);
 export const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
+export const ContactSubmission = mongoose.models.ContactSubmission || mongoose.model('ContactSubmission', contactSubmissionSchema);
