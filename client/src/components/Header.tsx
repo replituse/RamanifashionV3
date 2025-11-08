@@ -1,4 +1,4 @@
-import { ShoppingBag, Heart, User, Search, Menu, LogOut, ChevronDown } from "lucide-react";
+import { ShoppingBag, Heart, User, Search, Menu, LogOut, ChevronDown, ChevronRight } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import instagramIcon from "@assets/instagram_1762445939344.png";
 import facebookIcon from "@assets/communication_1762445935759.png";
@@ -29,6 +29,11 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import logoImage from "@assets/PNG__B_ LOGO_1762442171742.png";
 
 interface HeaderProps {
@@ -43,6 +48,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
   const [user, setUser] = useState<any>(null);
   const [storageUpdateTrigger, setStorageUpdateTrigger] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
 
   // Parse URL to determine active navigation state
   const getActiveNavState = () => {
@@ -460,100 +466,111 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
 
       {/* Mobile Navigation Menu */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-[280px] sm:w-[320px]">
-          <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
+        <SheetContent side="left" className="w-[280px] sm:w-[320px] p-0">
+          <SheetHeader className="px-6 py-4 border-b">
+            <SheetTitle className="text-xl font-bold">Menu</SheetTitle>
           </SheetHeader>
-          <nav className="flex flex-col gap-4 mt-8">
-            <Link
-              href="/"
-              className={`text-lg font-medium py-2 px-4 rounded-md hover-elevate ${navState.isHome ? "bg-primary/10 text-primary" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-              data-testid="mobile-link-home"
-            >
-              HOME
-            </Link>
-            <Link
-              href="/new-arrivals"
-              className={`text-lg font-medium py-2 px-4 rounded-md hover-elevate ${navState.isNewArrivals ? "bg-primary/10 text-primary" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-              data-testid="mobile-link-new-arrivals"
-            >
-              NEW ARRIVALS
-            </Link>
-            <Link
-              href="/trending-collection"
-              className={`text-lg font-medium py-2 px-4 rounded-md hover-elevate ${navState.isTrending ? "bg-primary/10 text-primary" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-              data-testid="mobile-link-trending"
-            >
-              TRENDING COLLECTION
-            </Link>
-            
-            <div className="border-t pt-4">
-              <p className="text-sm font-semibold text-muted-foreground px-4 mb-2">CATEGORIES</p>
+          <nav className="flex flex-col h-[calc(100vh-80px)] overflow-y-auto">
+            <div className="flex flex-col gap-1 p-3">
               <Link
-                href="/products?category=Jamdani Paithani"
-                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                href="/"
+                className={`text-base font-medium py-3 px-4 rounded-md hover-elevate transition-colors ${navState.isHome ? "bg-primary/10 text-primary" : "text-foreground"}`}
                 onClick={() => setMobileMenuOpen(false)}
-                data-testid="mobile-category-jamdani"
+                data-testid="mobile-link-home"
               >
-                Jamdani Paithani
+                HOME
               </Link>
               <Link
-                href="/products?category=Khun Irkal"
-                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                href="/new-arrivals"
+                className={`text-base font-medium py-3 px-4 rounded-md hover-elevate transition-colors ${navState.isNewArrivals ? "bg-primary/10 text-primary" : "text-foreground"}`}
                 onClick={() => setMobileMenuOpen(false)}
-                data-testid="mobile-category-khun"
+                data-testid="mobile-link-new-arrivals"
               >
-                Khun / Irkal (Ilkal)
+                NEW ARRIVALS
               </Link>
               <Link
-                href="/products?category=Ajrakh Modal"
-                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                href="/trending-collection"
+                className={`text-base font-medium py-3 px-4 rounded-md hover-elevate transition-colors ${navState.isTrending ? "bg-primary/10 text-primary" : "text-foreground"}`}
                 onClick={() => setMobileMenuOpen(false)}
-                data-testid="mobile-category-ajrakh"
+                data-testid="mobile-link-trending"
               >
-                Ajrakh Modal
-              </Link>
-              <Link
-                href="/products?category=Mul Mul Cotton"
-                className="text-base py-2 px-4 block rounded-md hover-elevate"
-                onClick={() => setMobileMenuOpen(false)}
-                data-testid="mobile-category-mul"
-              >
-                Mul Mul Cotton
-              </Link>
-              <Link
-                href="/products?category=Khadi Cotton"
-                className="text-base py-2 px-4 block rounded-md hover-elevate"
-                onClick={() => setMobileMenuOpen(false)}
-                data-testid="mobile-category-khadi"
-              >
-                Khadi Cotton
-              </Link>
-              <Link
-                href="/products?category=Patch Work"
-                className="text-base py-2 px-4 block rounded-md hover-elevate"
-                onClick={() => setMobileMenuOpen(false)}
-                data-testid="mobile-category-patch"
-              >
-                Patch Work
-              </Link>
-              <Link
-                href="/products?category=Pure Linen"
-                className="text-base py-2 px-4 block rounded-md hover-elevate"
-                onClick={() => setMobileMenuOpen(false)}
-                data-testid="mobile-category-linen"
-              >
-                Pure Linen
+                TRENDING COLLECTION
               </Link>
             </div>
+            
+            <div className="border-t">
+              <Collapsible open={categoriesOpen} onOpenChange={setCategoriesOpen}>
+                <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-4 text-base font-medium hover-elevate transition-colors group">
+                  <span className="text-foreground">CATEGORIES</span>
+                  <ChevronRight className={`h-5 w-5 text-muted-foreground transition-transform ${categoriesOpen ? "rotate-90" : ""}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pb-2">
+                  <div className="flex flex-col gap-1 pl-4 pr-3">
+                    <Link
+                      href="/products?category=Jamdani Paithani"
+                      className="text-sm py-2.5 px-4 block rounded-md hover-elevate transition-colors text-muted-foreground hover:text-foreground"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="mobile-category-jamdani"
+                    >
+                      Jamdani Paithani
+                    </Link>
+                    <Link
+                      href="/products?category=Khun Irkal"
+                      className="text-sm py-2.5 px-4 block rounded-md hover-elevate transition-colors text-muted-foreground hover:text-foreground"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="mobile-category-khun"
+                    >
+                      Khun / Irkal (Ilkal)
+                    </Link>
+                    <Link
+                      href="/products?category=Ajrakh Modal"
+                      className="text-sm py-2.5 px-4 block rounded-md hover-elevate transition-colors text-muted-foreground hover:text-foreground"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="mobile-category-ajrakh"
+                    >
+                      Ajrakh Modal
+                    </Link>
+                    <Link
+                      href="/products?category=Mul Mul Cotton"
+                      className="text-sm py-2.5 px-4 block rounded-md hover-elevate transition-colors text-muted-foreground hover:text-foreground"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="mobile-category-mul"
+                    >
+                      Mul Mul Cotton
+                    </Link>
+                    <Link
+                      href="/products?category=Khadi Cotton"
+                      className="text-sm py-2.5 px-4 block rounded-md hover-elevate transition-colors text-muted-foreground hover:text-foreground"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="mobile-category-khadi"
+                    >
+                      Khadi Cotton
+                    </Link>
+                    <Link
+                      href="/products?category=Patch Work"
+                      className="text-sm py-2.5 px-4 block rounded-md hover-elevate transition-colors text-muted-foreground hover:text-foreground"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="mobile-category-patch"
+                    >
+                      Patch Work
+                    </Link>
+                    <Link
+                      href="/products?category=Pure Linen"
+                      className="text-sm py-2.5 px-4 block rounded-md hover-elevate transition-colors text-muted-foreground hover:text-foreground"
+                      onClick={() => setMobileMenuOpen(false)}
+                      data-testid="mobile-category-linen"
+                    >
+                      Pure Linen
+                    </Link>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
 
-            <div className="border-t pt-4">
+            <div className="border-t flex flex-col gap-1 p-3">
               <Link
                 href="/sale"
-                className={`text-lg font-medium py-2 px-4 block rounded-md hover-elevate ${navState.isSale ? "bg-primary/10 text-primary" : ""}`}
+                className={`text-base font-medium py-3 px-4 block rounded-md hover-elevate transition-colors ${navState.isSale ? "bg-primary/10 text-primary" : "text-foreground"}`}
                 onClick={() => setMobileMenuOpen(false)}
                 data-testid="mobile-link-sale"
               >
@@ -561,7 +578,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               </Link>
               <Link
                 href="/about"
-                className={`text-lg font-medium py-2 px-4 block rounded-md hover-elevate ${navState.isAbout ? "bg-primary/10 text-primary" : ""}`}
+                className={`text-base font-medium py-3 px-4 block rounded-md hover-elevate transition-colors ${navState.isAbout ? "bg-primary/10 text-primary" : "text-foreground"}`}
                 onClick={() => setMobileMenuOpen(false)}
                 data-testid="mobile-link-about"
               >
@@ -572,7 +589,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
                   handleContactClick({} as MouseEvent<HTMLButtonElement>);
                   setMobileMenuOpen(false);
                 }}
-                className={`text-lg font-medium py-2 px-4 block rounded-md hover-elevate text-left w-full ${navState.isContact ? "bg-primary/10 text-primary" : ""}`}
+                className={`text-base font-medium py-3 px-4 block rounded-md hover-elevate text-left w-full transition-colors ${navState.isContact ? "bg-primary/10 text-primary" : "text-foreground"}`}
                 data-testid="mobile-link-contact"
               >
                 CONTACT

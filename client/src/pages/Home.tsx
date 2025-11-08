@@ -242,7 +242,7 @@ export default function Home() {
         </motion.div>
 
         <motion.section 
-          className="py-12" 
+          className="py-8 md:py-12" 
           style={{ backgroundColor: 'rgba(250, 220, 235, 0.7)' }}
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -251,20 +251,20 @@ export default function Home() {
         >
           <div className="max-w-7xl mx-auto px-4">
             <motion.div 
-              className="relative mb-6"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6"
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <div className="text-center">
-                <h2 className="text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-8 py-3 inline-block" data-testid="text-section-new-arrivals-home">
+              <div className="text-center sm:text-left flex-1">
+                <h2 className="text-2xl md:text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-6 md:px-8 py-2 md:py-3 inline-block" data-testid="text-section-new-arrivals-home">
                   New Arrival
                 </h2>
               </div>
               <button
                 onClick={() => setLocation("/new-arrivals")}
-                className="absolute right-0 top-1/2 -translate-y-1/2 px-8 py-3 bg-primary text-white border-2 border-white rounded-full hover:bg-primary/90 transition-colors font-bold"
+                className="px-6 md:px-8 py-2 md:py-3 bg-primary text-white border-2 border-white rounded-full hover:bg-primary/90 transition-colors font-bold text-sm md:text-base self-center sm:self-auto"
                 data-testid="button-view-all-new-arrivals"
               >
                 View All
@@ -319,7 +319,7 @@ export default function Home() {
         </motion.section>
 
         <motion.section 
-          className="py-12" 
+          className="py-8 md:py-12" 
           style={{ backgroundColor: 'rgba(250, 220, 235, 0.7)' }}
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -328,20 +328,20 @@ export default function Home() {
         >
           <div className="max-w-7xl mx-auto px-4">
             <motion.div 
-              className="relative mb-6"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6"
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <div className="text-center">
-                <h2 className="text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-8 py-3 inline-block" data-testid="text-section-trending-collection">
+              <div className="text-center sm:text-left flex-1">
+                <h2 className="text-2xl md:text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-6 md:px-8 py-2 md:py-3 inline-block" data-testid="text-section-trending-collection">
                   Trending Collection
                 </h2>
               </div>
               <button
                 onClick={() => setLocation("/products?isTrending=true")}
-                className="absolute right-0 top-1/2 -translate-y-1/2 px-8 py-3 bg-primary text-white border-2 border-white rounded-full hover:bg-primary/90 transition-colors font-bold"
+                className="px-6 md:px-8 py-2 md:py-3 bg-primary text-white border-2 border-white rounded-full hover:bg-primary/90 transition-colors font-bold text-sm md:text-base self-center sm:self-auto"
                 data-testid="button-view-all-trending"
               >
                 View All
@@ -402,20 +402,20 @@ export default function Home() {
           </div>
         </motion.section>
 
-        <section className="max-w-7xl mx-auto px-4 py-12">
+        <section className="max-w-7xl mx-auto px-4 py-8 md:py-12">
           <motion.div 
-            className="text-center mb-12"
+            className="text-center mb-8 md:mb-12"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-8 py-3 inline-block" data-testid="text-section-categories">
+            <h2 className="text-2xl md:text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-6 md:px-8 py-2 md:py-3 inline-block" data-testid="text-section-categories">
               Shop by Category
             </h2>
           </motion.div>
           <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -436,14 +436,14 @@ export default function Home() {
                 }}
                 data-testid={`category-card-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <div className="w-full aspect-[2/3] overflow-hidden rounded-lg mb-4 shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div className="w-full aspect-[2/3] overflow-hidden rounded-lg mb-3 md:mb-4 shadow-md hover:shadow-xl transition-shadow duration-300">
                   <img 
                     src={category.image} 
                     alt={category.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <h3 className="text-center text-base md:text-lg font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-6 py-2 inline-block">
+                <h3 className="text-center text-xs md:text-base lg:text-lg font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-3 md:px-6 py-1.5 md:py-2 inline-block">
                   {category.name}
                 </h3>
               </motion.div>
@@ -452,7 +452,7 @@ export default function Home() {
         </section>
 
         <motion.section 
-          className="py-16" 
+          className="py-8 md:py-16" 
           style={{ backgroundColor: 'rgba(250, 220, 235, 0.7)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -461,18 +461,18 @@ export default function Home() {
         >
           <div className="max-w-7xl mx-auto px-4">
             <motion.div 
-              className="text-center mb-12"
+              className="text-center mb-8 md:mb-12"
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-8 py-3 inline-block" data-testid="text-section-testimonials">
+              <h2 className="text-2xl md:text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-6 md:px-8 py-2 md:py-3 inline-block" data-testid="text-section-testimonials">
                 What Our Customers Say
               </h2>
             </motion.div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12 mb-8 md:mb-12">
               <motion.div 
                 className="lg:col-span-1 space-y-6"
                 initial={{ opacity: 0, x: -30 }}
