@@ -9,6 +9,17 @@ import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { localStorageService } from "@/lib/localStorage";
 
+const prefetchProduct = async (productId: string) => {
+  await queryClient.prefetchQuery({
+    queryKey: ["/api/products", productId],
+    queryFn: async () => {
+      const response = await fetch(`/api/products/${productId}`);
+      if (!response.ok) throw new Error("Failed to fetch product");
+      return response.json();
+    },
+  });
+};
+
 interface ProductCardProps {
   id: string;
   name: string;
@@ -134,6 +145,7 @@ export default function ProductCard({
     <Card 
       className="overflow-hidden cursor-pointer hover-elevate active-elevate-2 group"
       onClick={() => onClick ? onClick() : setLocation(`/product/${id}`)}
+      onMouseEnter={() => prefetchProduct(id)}
       data-testid={`card-product-${id}`}
     >
       <div className="relative aspect-[3/5] overflow-hidden">
