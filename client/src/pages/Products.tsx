@@ -8,16 +8,18 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal, X, ArrowUpDown } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import { useLocation } from "wouter";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 export default function Products() {
   const [location] = useLocation();
   const [showFilters, setShowFilters] = useState(false);
-  const [sortBy, setSortBy] = useState("createdAt");
-  const [order, setOrder] = useState("desc");
+  const [showMobileSort, setShowMobileSort] = useState(false);
+  const [sortBy, setSortBy] = useState("");
+  const [order, setOrder] = useState("");
   const [page, setPage] = useState(1);
   const [priceRange, setPriceRange] = useState([500, 50000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -53,13 +55,16 @@ export default function Products() {
 
   // Build query params
   const queryParams = new URLSearchParams({
-    sort: sortBy,
-    order,
     page: page.toString(),
     limit: "12",
     minPrice: priceRange[0].toString(),
     maxPrice: priceRange[1].toString(),
   });
+
+  if (sortBy && order) {
+    queryParams.append("sort", sortBy);
+    queryParams.append("order", order);
+  }
 
   if (selectedCategories.length > 0) {
     queryParams.append("category", selectedCategories.join(","));
@@ -104,9 +109,14 @@ export default function Products() {
   const occasions = filtersData?.occasions || ["Wedding", "Party", "Festival", "Casual", "Office"];
 
   const handleSortChange = (value: string) => {
-    const [newSort, newOrder] = value.split("-");
-    setSortBy(newSort);
-    setOrder(newOrder || "desc");
+    if (value === "none") {
+      setSortBy("");
+      setOrder("");
+    } else {
+      const [newSort, newOrder] = value.split("-");
+      setSortBy(newSort);
+      setOrder(newOrder || "desc");
+    }
     setPage(1);
   };
 
@@ -154,7 +164,7 @@ export default function Products() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 pb-20 lg:pb-8">
         <div className="mb-6">
           <nav className="text-sm text-muted-foreground mb-4" data-testid="breadcrumb">
             <a href="/" className="hover:text-foreground">Home</a>
@@ -172,27 +182,24 @@ export default function Products() {
               </p>
             </div>
             
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                className="lg:hidden"
-                onClick={() => setShowFilters(!showFilters)}
-                data-testid="button-toggle-filters"
+            <div className="hidden lg:flex items-center gap-2">
+              <Select 
+                value={sortBy && order ? `${sortBy}-${order}` : "none"} 
+                onValueChange={handleSortChange}
               >
-                <SlidersHorizontal className="h-4 w-4 mr-2" />
-                Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
-              </Button>
-              
-              <Select value={`${sortBy}-${order}`} onValueChange={handleSortChange}>
                 <SelectTrigger className="w-48" data-testid="select-sort">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder="Sort By" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="none">Sort By</SelectItem>
                   <SelectItem value="createdAt-desc">What's New</SelectItem>
+                  <SelectItem value="rating-desc">Highest Rated</SelectItem>
+                  <SelectItem value="reviewCount-desc">Most Reviews</SelectItem>
                   <SelectItem value="price-asc">Price: Low to High</SelectItem>
                   <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                  <SelectItem value="rating-desc">Customer Rating</SelectItem>
-                  <SelectItem value="reviewCount-desc">Most Reviews</SelectItem>
+                  <SelectItem value="discount-desc">Best Discount</SelectItem>
+                  <SelectItem value="name-asc">Name: A to Z</SelectItem>
+                  <SelectItem value="name-desc">Name: Z to A</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -425,7 +432,7 @@ export default function Products() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                   {products.map((product: any) => {
                     const discount = product.originalPrice 
                       ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -486,6 +493,231 @@ export default function Products() {
               </>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Bottom Bar with Sort and Filter */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t z-50 safe-area-pb">
+        <div className="grid grid-cols-2 gap-px">
+          <Sheet open={showMobileSort} onOpenChange={setShowMobileSort}>
+            <SheetTrigger asChild>
+              <Button 
+                variant="ghost" 
+                className="h-14 rounded-none flex items-center justify-center gap-2"
+                data-testid="button-mobile-sort"
+              >
+                <ArrowUpDown className="h-5 w-5" />
+                <span className="font-medium">SORT</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-[50vh]">
+              <SheetHeader>
+                <SheetTitle>Sort By</SheetTitle>
+              </SheetHeader>
+              <div className="mt-6 space-y-2">
+                {[
+                  { value: "none", label: "Default" },
+                  { value: "createdAt-desc", label: "What's New" },
+                  { value: "rating-desc", label: "Highest Rated" },
+                  { value: "reviewCount-desc", label: "Most Reviews" },
+                  { value: "price-asc", label: "Price: Low to High" },
+                  { value: "price-desc", label: "Price: High to Low" },
+                  { value: "discount-desc", label: "Best Discount" },
+                  { value: "name-asc", label: "Name: A to Z" },
+                  { value: "name-desc", label: "Name: Z to A" },
+                ].map((option) => (
+                  <Button
+                    key={option.value}
+                    variant={
+                      (option.value === "none" && !sortBy && !order) ||
+                      (sortBy && order && `${sortBy}-${order}` === option.value)
+                        ? "default"
+                        : "ghost"
+                    }
+                    className="w-full justify-start"
+                    onClick={() => {
+                      handleSortChange(option.value);
+                      setShowMobileSort(false);
+                    }}
+                    data-testid={`button-sort-${option.value}`}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          <Sheet open={showFilters} onOpenChange={setShowFilters}>
+            <SheetTrigger asChild>
+              <Button 
+                variant="ghost" 
+                className="h-14 rounded-none flex items-center justify-center gap-2"
+                data-testid="button-mobile-filter"
+              >
+                <SlidersHorizontal className="h-5 w-5" />
+                <span className="font-medium">FILTER</span>
+                {activeFiltersCount > 0 && (
+                  <span className="bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-[80vh] overflow-y-auto">
+              <SheetHeader className="mb-4">
+                <div className="flex items-center justify-between">
+                  <SheetTitle>Filters</SheetTitle>
+                  {activeFiltersCount > 0 && (
+                    <Button variant="ghost" size="sm" onClick={clearAllFilters}>
+                      Clear All
+                    </Button>
+                  )}
+                </div>
+              </SheetHeader>
+              
+              <div className="space-y-6">
+                <Collapsible open={openSections.includes("categories")}>
+                  <CollapsibleTrigger 
+                    className="flex items-center justify-between w-full py-3 hover-elevate px-2 rounded-md"
+                    onClick={() => toggleSection("categories")}
+                  >
+                    <span className="font-medium">Categories</span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes("categories") ? "rotate-180" : ""}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-3 pt-2">
+                    {categories.map((category: string) => (
+                      <div key={category} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`mobile-${category}`} 
+                          checked={selectedCategories.includes(category)}
+                          onCheckedChange={() => toggleCategory(category)}
+                        />
+                        <Label htmlFor={`mobile-${category}`} className="text-sm cursor-pointer">
+                          {category}
+                        </Label>
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+
+                <Collapsible open={openSections.includes("price")}>
+                  <CollapsibleTrigger 
+                    className="flex items-center justify-between w-full py-3 hover-elevate px-2 rounded-md"
+                    onClick={() => toggleSection("price")}
+                  >
+                    <span className="font-medium">Price Range</span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes("price") ? "rotate-180" : ""}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="pt-4 space-y-4">
+                    <Slider
+                      value={priceRange}
+                      onValueChange={(val) => {
+                        setPriceRange(val);
+                        setPage(1);
+                      }}
+                      min={500}
+                      max={50000}
+                      step={500}
+                    />
+                    <div className="flex items-center justify-between text-sm">
+                      <span>₹{priceRange[0]}</span>
+                      <span>₹{priceRange[1]}</span>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+
+                <Collapsible open={openSections.includes("fabric")}>
+                  <CollapsibleTrigger 
+                    className="flex items-center justify-between w-full py-3 hover-elevate px-2 rounded-md"
+                    onClick={() => toggleSection("fabric")}
+                  >
+                    <span className="font-medium">Fabric Type</span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes("fabric") ? "rotate-180" : ""}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-3 pt-2">
+                    {fabrics.map((fabric: string) => (
+                      <div key={fabric} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`mobile-${fabric}`} 
+                          checked={selectedFabrics.includes(fabric)}
+                          onCheckedChange={() => toggleFabric(fabric)}
+                        />
+                        <Label htmlFor={`mobile-${fabric}`} className="text-sm cursor-pointer">
+                          {fabric}
+                        </Label>
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+
+                <Collapsible open={openSections.includes("occasion")}>
+                  <CollapsibleTrigger 
+                    className="flex items-center justify-between w-full py-3 hover-elevate px-2 rounded-md"
+                    onClick={() => toggleSection("occasion")}
+                  >
+                    <span className="font-medium">Occasion</span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes("occasion") ? "rotate-180" : ""}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-3 pt-2">
+                    {occasions.map((occasion: string) => (
+                      <div key={occasion} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`mobile-${occasion}`} 
+                          checked={selectedOccasions.includes(occasion)}
+                          onCheckedChange={() => toggleOccasion(occasion)}
+                        />
+                        <Label htmlFor={`mobile-${occasion}`} className="text-sm cursor-pointer">
+                          {occasion}
+                        </Label>
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+
+                <Collapsible open={openSections.includes("color")}>
+                  <CollapsibleTrigger 
+                    className="flex items-center justify-between w-full py-3 hover-elevate px-2 rounded-md"
+                    onClick={() => toggleSection("color")}
+                  >
+                    <span className="font-medium">Color</span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes("color") ? "rotate-180" : ""}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="pt-2">
+                    <div className="grid grid-cols-5 gap-3">
+                      {colors.map((color: string) => (
+                        <button
+                          key={color}
+                          className={`w-10 h-10 rounded-full border-2 hover-elevate ${
+                            selectedColors.includes(color) ? 'border-primary ring-2 ring-primary' : 'border-border'
+                          }`}
+                          style={{ backgroundColor: color.toLowerCase() }}
+                          onClick={() => toggleColor(color)}
+                          title={color}
+                        />
+                      ))}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+
+                <div className="pt-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="mobile-inStock"
+                      checked={inStockOnly}
+                      onCheckedChange={(checked) => {
+                        setInStockOnly(checked as boolean);
+                        setPage(1);
+                      }}
+                    />
+                    <Label htmlFor="mobile-inStock" className="text-sm cursor-pointer">
+                      In Stock Only
+                    </Label>
+                  </div>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
 
