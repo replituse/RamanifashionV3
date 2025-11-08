@@ -8,6 +8,24 @@ Ramani Fashion India is a full-stack e-commerce web application specializing in 
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+**November 8, 2025 - Product Management Form Enhancement:**
+- Added support for up to 5 product images (Main Image + 4 additional images)
+- Enhanced product form with all MongoDB schema fields:
+  - Image management: 5 separate image URL inputs instead of comma-separated
+  - Product details: Added subcategory, pattern, workType fields
+  - Product features: Added "Includes Blouse Piece" checkbox
+  - Product specifications: Added fabricComposition, dimensions, weight, careInstructions, countryOfOrigin
+- Auto-detection for sale products: Products automatically appear on sale page when selling price (price) < original price (originalPrice)
+- Updated form state management to handle specifications object and multiple image fields
+- All new fields include proper data-testid attributes for testing
+
+**November 8, 2025 - Admin Dashboard Color Variety:**
+- Updated AdminDashboard.tsx with varied colors: pink, purple, cyan cards; green revenue chart, blue orders chart, amber weekly sales chart
+- Updated Analytics.tsx with diverse colors: purple customer growth, green/amber/red order status bars
+- Replaced old product categories with actual categories from database (22 categories total)
+
 ## System Architecture
 
 ### Frontend Architecture
