@@ -279,16 +279,38 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
           <NavigationMenu className="mx-auto">
             <NavigationMenuList className="flex items-center justify-center gap-8 py-2">
               <NavigationMenuItem>
-                <a href="/" onClick={handleHomeClick} className="nav-link px-4 py-2 tracking-wide text-base font-medium" data-testid="link-home">HOME</a>
+                <a 
+                  href="/" 
+                  onClick={handleHomeClick} 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/" ? "active" : ""}`} 
+                  data-testid="link-home"
+                >
+                  HOME
+                </a>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/new-arrivals" className="nav-link px-4 py-2 tracking-wide text-base font-medium" data-testid="link-new-arrivals">NEW ARRIVALS</Link>
+                <Link 
+                  href="/new-arrivals" 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/new-arrivals" ? "active" : ""}`} 
+                  data-testid="link-new-arrivals"
+                >
+                  NEW ARRIVALS
+                </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/products?isTrending=true" className="nav-link px-4 py-2 tracking-wide text-base font-medium" data-testid="link-trending-collection">TRENDING COLLECTION</Link>
+                <Link 
+                  href="/products?isTrending=true" 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location.includes("/products") && location.includes("isTrending") ? "active" : ""}`} 
+                  data-testid="link-trending-collection"
+                >
+                  TRENDING COLLECTION
+                </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="px-4 py-2 tracking-wide text-base font-medium bg-transparent hover:bg-transparent data-[state=open]:bg-transparent" data-testid="link-categories">
+                <NavigationMenuTrigger 
+                  className={`px-4 py-2 tracking-wide text-base font-medium bg-transparent hover:bg-transparent data-[state=open]:bg-transparent ${location.includes("/products") && !location.includes("isTrending") ? "nav-link active" : ""}`} 
+                  data-testid="link-categories"
+                >
                   CATEGORIES
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="bg-white">
@@ -362,13 +384,31 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/sale" className="nav-link text-destructive px-4 py-2 tracking-wide text-base font-medium" data-testid="link-sale">SALE</Link>
+                <Link 
+                  href="/sale" 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/sale" ? "active text-destructive" : ""}`} 
+                  data-testid="link-sale"
+                >
+                  SALE
+                </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/about" className="nav-link px-4 py-2 tracking-wide text-base font-medium" data-testid="link-about">ABOUT US</Link>
+                <Link 
+                  href="/about" 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/about" ? "active" : ""}`} 
+                  data-testid="link-about"
+                >
+                  ABOUT US
+                </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <button onClick={handleContactClick} className="nav-link px-4 py-2 tracking-wide text-base font-medium bg-transparent border-0 cursor-pointer" data-testid="link-contact">CONTACT</button>
+                <button 
+                  onClick={handleContactClick} 
+                  className="nav-link px-4 py-2 tracking-wide text-base font-medium bg-transparent border-0 cursor-pointer" 
+                  data-testid="link-contact"
+                >
+                  CONTACT
+                </button>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
