@@ -11,12 +11,13 @@ import { Slider } from "@/components/ui/slider";
 import { SlidersHorizontal, X, ArrowUpDown } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { motion } from "framer-motion";
 
 export default function Products() {
   const [location] = useLocation();
+  const searchString = useSearch();
   const [showFilters, setShowFilters] = useState(false);
   const [showMobileSort, setShowMobileSort] = useState(false);
   const [sortBy, setSortBy] = useState("");
@@ -32,7 +33,7 @@ export default function Products() {
   const [openSections, setOpenSections] = useState<string[]>(["categories", "price", "fabric"]);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(searchString);
     
     const categoryParam = urlParams.get('category');
     setSelectedCategories(categoryParam ? categoryParam.split(',') : []);
@@ -50,7 +51,7 @@ export default function Products() {
     setIsTrending(trendingParam === 'true');
     
     setPage(1);
-  }, [location, window.location.search]);
+  }, [searchString]);
 
   const toggleSection = (section: string) => {
     setOpenSections(prev =>
