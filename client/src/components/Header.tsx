@@ -37,6 +37,40 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
   const [user, setUser] = useState<any>(null);
   const [storageUpdateTrigger, setStorageUpdateTrigger] = useState(0);
 
+  // Parse URL to determine active navigation state
+  const getActiveNavState = () => {
+    try {
+      const url = new URL(location, window.location.origin);
+      const pathname = url.pathname;
+      const searchParams = url.searchParams;
+      
+      const isTrending = pathname === "/products" && searchParams.get("isTrending") === "true";
+      const hasCategory = pathname === "/products" && searchParams.has("category");
+      const isProducts = pathname === "/products" && !isTrending;
+      
+      return {
+        isHome: pathname === "/",
+        isNewArrivals: pathname === "/new-arrivals",
+        isTrending,
+        isCategories: isProducts && (hasCategory || (!isTrending && pathname === "/products")),
+        isSale: pathname === "/sale",
+        isAbout: pathname === "/about"
+      };
+    } catch {
+      // Fallback for environments without window
+      return {
+        isHome: location === "/",
+        isNewArrivals: location === "/new-arrivals",
+        isTrending: location.includes("isTrending=true"),
+        isCategories: location.includes("/products") && !location.includes("isTrending"),
+        isSale: location === "/sale",
+        isAbout: location === "/about"
+      };
+    }
+  };
+
+  const navState = getActiveNavState();
+
   const { data: cart } = useQuery({
     queryKey: ["/api/cart"],
     enabled: !!user,
@@ -282,7 +316,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
                 <a 
                   href="/" 
                   onClick={handleHomeClick} 
-                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/" ? "active" : ""}`} 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${navState.isHome ? "active text-primary" : ""}`} 
                   data-testid="link-home"
                 >
                   HOME
@@ -291,7 +325,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               <NavigationMenuItem>
                 <Link 
                   href="/new-arrivals" 
-                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/new-arrivals" ? "active" : ""}`} 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${navState.isNewArrivals ? "active text-primary" : ""}`} 
                   data-testid="link-new-arrivals"
                 >
                   NEW ARRIVALS
@@ -300,7 +334,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               <NavigationMenuItem>
                 <Link 
                   href="/products?isTrending=true" 
-                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location.includes("/products") && location.includes("isTrending") ? "active" : ""}`} 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${navState.isTrending ? "active text-primary" : ""}`} 
                   data-testid="link-trending-collection"
                 >
                   TRENDING COLLECTION
@@ -308,7 +342,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger 
-                  className={`px-4 py-2 tracking-wide text-base font-medium bg-transparent hover:bg-transparent data-[state=open]:bg-transparent ${location.includes("/products") && !location.includes("isTrending") ? "nav-link active" : ""}`} 
+                  className={`px-4 py-2 tracking-wide text-base font-medium bg-transparent hover:bg-transparent data-[state=open]:bg-transparent ${navState.isCategories ? "nav-link active text-primary" : ""}`} 
                   data-testid="link-categories"
                 >
                   CATEGORIES
@@ -386,7 +420,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               <NavigationMenuItem>
                 <Link 
                   href="/sale" 
-                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/sale" ? "active text-destructive" : ""}`} 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${navState.isSale ? "active text-primary" : ""}`} 
                   data-testid="link-sale"
                 >
                   SALE
@@ -395,7 +429,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               <NavigationMenuItem>
                 <Link 
                   href="/about" 
-                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${location === "/about" ? "active" : ""}`} 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium ${navState.isAbout ? "active text-primary" : ""}`} 
                   data-testid="link-about"
                 >
                   ABOUT US

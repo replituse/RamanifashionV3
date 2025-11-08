@@ -28,6 +28,7 @@ export default function Products() {
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
   const [inStockOnly, setInStockOnly] = useState(false);
+  const [isTrending, setIsTrending] = useState(false);
   const [openSections, setOpenSections] = useState<string[]>(["categories", "price", "fabric"]);
 
   useEffect(() => {
@@ -44,6 +45,9 @@ export default function Products() {
     
     const fabricParam = urlParams.get('fabric');
     setSelectedFabrics(fabricParam ? fabricParam.split(',') : []);
+    
+    const trendingParam = urlParams.get('isTrending');
+    setIsTrending(trendingParam === 'true');
     
     setPage(1);
   }, [location]);
@@ -81,6 +85,9 @@ export default function Products() {
   }
   if (inStockOnly) {
     queryParams.append("inStock", "true");
+  }
+  if (isTrending) {
+    queryParams.append("isTrending", "true");
   }
 
   const { data: productsData, isLoading } = useQuery({
