@@ -47,6 +47,9 @@ export default function TrendingCollection() {
     setSelectedFabrics(fabricParam ? fabricParam.split(',') : []);
     
     setPage(1);
+    
+    // Scroll to top when filters change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location]);
 
   const toggleSection = (section: string) => {

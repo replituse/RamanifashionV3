@@ -51,6 +51,9 @@ export default function Products() {
     setIsTrending(trendingParam === 'true');
     
     setPage(1);
+    
+    // Scroll to top when filters change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [searchString]);
 
   const toggleSection = (section: string) => {
