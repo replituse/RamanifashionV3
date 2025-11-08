@@ -57,7 +57,16 @@ export default function ProductManagement() {
     isNew: false,
     isTrending: false,
     isBestseller: false,
-    images: ""
+    image1: "",
+    image2: "",
+    image3: "",
+    image4: "",
+    image5: "",
+    fabricComposition: "",
+    dimensions: "",
+    weight: "",
+    careInstructions: "",
+    countryOfOrigin: ""
   });
 
   const { data: products, isLoading } = useQuery({
@@ -134,19 +143,57 @@ export default function ProductManagement() {
       isNew: false,
       isTrending: false,
       isBestseller: false,
-      images: ""
+      image1: "",
+      image2: "",
+      image3: "",
+      image4: "",
+      image5: "",
+      fabricComposition: "",
+      dimensions: "",
+      weight: "",
+      careInstructions: "",
+      countryOfOrigin: ""
     });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    const images = [
+      productForm.image1,
+      productForm.image2,
+      productForm.image3,
+      productForm.image4,
+      productForm.image5
+    ].filter(url => url.trim());
+
     const formattedData = {
-      ...productForm,
+      name: productForm.name,
+      description: productForm.description,
       price: parseFloat(productForm.price),
       originalPrice: productForm.originalPrice ? parseFloat(productForm.originalPrice) : undefined,
+      category: productForm.category,
+      subcategory: productForm.subcategory || undefined,
+      fabric: productForm.fabric || undefined,
+      color: productForm.color || undefined,
+      occasion: productForm.occasion || undefined,
+      pattern: productForm.pattern || undefined,
+      workType: productForm.workType || undefined,
+      blousePiece: productForm.blousePiece,
+      sareeLength: productForm.sareeLength || undefined,
       stockQuantity: parseInt(productForm.stockQuantity) || 0,
-      images: productForm.images.split(",").map(url => url.trim()).filter(Boolean)
+      inStock: productForm.inStock,
+      isNew: productForm.isNew,
+      isTrending: productForm.isTrending,
+      isBestseller: productForm.isBestseller,
+      images,
+      specifications: {
+        fabricComposition: productForm.fabricComposition || undefined,
+        dimensions: productForm.dimensions || undefined,
+        weight: productForm.weight || undefined,
+        careInstructions: productForm.careInstructions || undefined,
+        countryOfOrigin: productForm.countryOfOrigin || undefined,
+      }
     };
 
     if (editingProduct) {
@@ -158,6 +205,7 @@ export default function ProductManagement() {
 
   const handleEdit = (product: any) => {
     setEditingProduct(product);
+    const images = product.images || [];
     setProductForm({
       name: product.name || "",
       description: product.description || "",
@@ -177,7 +225,16 @@ export default function ProductManagement() {
       isNew: product.isNew || false,
       isTrending: product.isTrending || false,
       isBestseller: product.isBestseller || false,
-      images: product.images?.join(", ") || ""
+      image1: images[0] || "",
+      image2: images[1] || "",
+      image3: images[2] || "",
+      image4: images[3] || "",
+      image5: images[4] || "",
+      fabricComposition: product.specifications?.fabricComposition || "",
+      dimensions: product.specifications?.dimensions || "",
+      weight: product.specifications?.weight || "",
+      careInstructions: product.specifications?.careInstructions || "",
+      countryOfOrigin: product.specifications?.countryOfOrigin || ""
     });
   };
 
@@ -416,15 +473,164 @@ export default function ProductManagement() {
                     </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="images">Image URLs (comma-separated)</Label>
-                    <Textarea
-                      id="images"
-                      value={productForm.images}
-                      onChange={(e) => setProductForm({ ...productForm, images: e.target.value })}
-                      placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-                      data-testid="input-images"
-                    />
+                  <div className="space-y-3">
+                    <Label>Product Images (Up to 5 images)</Label>
+                    <div className="space-y-2">
+                      <div>
+                        <Label htmlFor="image1" className="text-sm text-muted-foreground">Main Image *</Label>
+                        <Input
+                          id="image1"
+                          value={productForm.image1}
+                          onChange={(e) => setProductForm({ ...productForm, image1: e.target.value })}
+                          placeholder="https://example.com/image1.jpg"
+                          required
+                          data-testid="input-image-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="image2" className="text-sm text-muted-foreground">Image 2</Label>
+                        <Input
+                          id="image2"
+                          value={productForm.image2}
+                          onChange={(e) => setProductForm({ ...productForm, image2: e.target.value })}
+                          placeholder="https://example.com/image2.jpg"
+                          data-testid="input-image-2"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="image3" className="text-sm text-muted-foreground">Image 3</Label>
+                        <Input
+                          id="image3"
+                          value={productForm.image3}
+                          onChange={(e) => setProductForm({ ...productForm, image3: e.target.value })}
+                          placeholder="https://example.com/image3.jpg"
+                          data-testid="input-image-3"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="image4" className="text-sm text-muted-foreground">Image 4</Label>
+                        <Input
+                          id="image4"
+                          value={productForm.image4}
+                          onChange={(e) => setProductForm({ ...productForm, image4: e.target.value })}
+                          placeholder="https://example.com/image4.jpg"
+                          data-testid="input-image-4"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="image5" className="text-sm text-muted-foreground">Image 5</Label>
+                        <Input
+                          id="image5"
+                          value={productForm.image5}
+                          onChange={(e) => setProductForm({ ...productForm, image5: e.target.value })}
+                          placeholder="https://example.com/image5.jpg"
+                          data-testid="input-image-5"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="subcategory">Subcategory</Label>
+                      <Input
+                        id="subcategory"
+                        value={productForm.subcategory}
+                        onChange={(e) => setProductForm({ ...productForm, subcategory: e.target.value })}
+                        placeholder="e.g., Wedding Wear"
+                        data-testid="input-subcategory"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="pattern">Pattern</Label>
+                      <Input
+                        id="pattern"
+                        value={productForm.pattern}
+                        onChange={(e) => setProductForm({ ...productForm, pattern: e.target.value })}
+                        placeholder="e.g., Floral, Geometric"
+                        data-testid="input-pattern"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="workType">Work Type</Label>
+                      <Input
+                        id="workType"
+                        value={productForm.workType}
+                        onChange={(e) => setProductForm({ ...productForm, workType: e.target.value })}
+                        placeholder="e.g., Hand Embroidery, Machine Work"
+                        data-testid="input-work-type"
+                      />
+                    </div>
+                    <div className="flex items-center space-x-2 pt-8">
+                      <Checkbox
+                        id="blousePiece"
+                        checked={productForm.blousePiece}
+                        onCheckedChange={(checked) => setProductForm({ ...productForm, blousePiece: checked as boolean })}
+                        data-testid="checkbox-blouse-piece"
+                      />
+                      <Label htmlFor="blousePiece">Includes Blouse Piece</Label>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-4 mt-4">
+                    <h3 className="text-lg font-semibold mb-3">Product Specifications</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="fabricComposition">Fabric Composition</Label>
+                        <Input
+                          id="fabricComposition"
+                          value={productForm.fabricComposition}
+                          onChange={(e) => setProductForm({ ...productForm, fabricComposition: e.target.value })}
+                          placeholder="e.g., 100% Pure Silk"
+                          data-testid="input-fabric-composition"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="weight">Weight</Label>
+                        <Input
+                          id="weight"
+                          value={productForm.weight}
+                          onChange={(e) => setProductForm({ ...productForm, weight: e.target.value })}
+                          placeholder="e.g., 650 grams"
+                          data-testid="input-weight"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <Label htmlFor="dimensions">Dimensions</Label>
+                        <Input
+                          id="dimensions"
+                          value={productForm.dimensions}
+                          onChange={(e) => setProductForm({ ...productForm, dimensions: e.target.value })}
+                          placeholder="e.g., 5.5m x 1.2m"
+                          data-testid="input-dimensions"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="countryOfOrigin">Country of Origin</Label>
+                        <Input
+                          id="countryOfOrigin"
+                          value={productForm.countryOfOrigin}
+                          onChange={(e) => setProductForm({ ...productForm, countryOfOrigin: e.target.value })}
+                          placeholder="e.g., India"
+                          data-testid="input-country-of-origin"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <Label htmlFor="careInstructions">Care Instructions</Label>
+                      <Textarea
+                        id="careInstructions"
+                        value={productForm.careInstructions}
+                        onChange={(e) => setProductForm({ ...productForm, careInstructions: e.target.value })}
+                        placeholder="e.g., Dry clean only, Iron on low heat"
+                        data-testid="input-care-instructions"
+                      />
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-6">
