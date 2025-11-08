@@ -23,6 +23,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import logoImage from "@assets/PNG__B_ LOGO_1762442171742.png";
 
 interface HeaderProps {
@@ -36,33 +42,38 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
   const [location, setLocation] = useLocation();
   const [user, setUser] = useState<any>(null);
   const [storageUpdateTrigger, setStorageUpdateTrigger] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Parse URL to determine active navigation state
   const getActiveNavState = () => {
     try {
-      const url = new URL(location, window.location.origin);
+      const url = new URL(window.location.href);
       const pathname = url.pathname;
       const searchParams = url.searchParams;
+      const hash = url.hash;
       
       const hasCategory = pathname === "/products" && searchParams.has("category");
+      const isOnContactSection = pathname === "/" && hash === "#contact";
       
       return {
-        isHome: pathname === "/",
+        isHome: pathname === "/" && hash !== "#contact",
         isNewArrivals: pathname === "/new-arrivals",
         isTrending: pathname === "/trending-collection",
         isCategories: pathname === "/products" && (hasCategory || pathname === "/products"),
         isSale: pathname === "/sale",
-        isAbout: pathname === "/about"
+        isAbout: pathname === "/about",
+        isContact: isOnContactSection
       };
     } catch {
       // Fallback for environments without window
       return {
-        isHome: location === "/",
+        isHome: location === "/" && !location.includes("#contact"),
         isNewArrivals: location === "/new-arrivals",
         isTrending: location === "/trending-collection",
         isCategories: location.includes("/products"),
         isSale: location === "/sale",
-        isAbout: location === "/about"
+        isAbout: location === "/about",
+        isContact: location.includes("#contact")
       };
     }
   };
@@ -181,7 +192,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               size="icon"
               variant="ghost"
               className="md:hidden"
-              onClick={onMenuClick}
+              onClick={() => setMobileMenuOpen(true)}
               data-testid="button-menu"
             >
               <Menu className="h-5 w-5" />
@@ -436,7 +447,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               <NavigationMenuItem>
                 <button 
                   onClick={handleContactClick} 
-                  className="nav-link px-4 py-2 tracking-wide text-base font-medium bg-transparent border-0 cursor-pointer" 
+                  className={`nav-link px-4 py-2 tracking-wide text-base font-medium bg-transparent border-0 cursor-pointer ${navState.isContact ? "active text-primary" : ""}`}
                   data-testid="link-contact"
                 >
                   CONTACT
@@ -446,6 +457,130 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
           </NavigationMenu>
         </div>
       </nav>
+
+      {/* Mobile Navigation Menu */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side="left" className="w-[280px] sm:w-[320px]">
+          <SheetHeader>
+            <SheetTitle>Menu</SheetTitle>
+          </SheetHeader>
+          <nav className="flex flex-col gap-4 mt-8">
+            <Link
+              href="/"
+              className={`text-lg font-medium py-2 px-4 rounded-md hover-elevate ${navState.isHome ? "bg-primary/10 text-primary" : ""}`}
+              onClick={() => setMobileMenuOpen(false)}
+              data-testid="mobile-link-home"
+            >
+              HOME
+            </Link>
+            <Link
+              href="/new-arrivals"
+              className={`text-lg font-medium py-2 px-4 rounded-md hover-elevate ${navState.isNewArrivals ? "bg-primary/10 text-primary" : ""}`}
+              onClick={() => setMobileMenuOpen(false)}
+              data-testid="mobile-link-new-arrivals"
+            >
+              NEW ARRIVALS
+            </Link>
+            <Link
+              href="/trending-collection"
+              className={`text-lg font-medium py-2 px-4 rounded-md hover-elevate ${navState.isTrending ? "bg-primary/10 text-primary" : ""}`}
+              onClick={() => setMobileMenuOpen(false)}
+              data-testid="mobile-link-trending"
+            >
+              TRENDING COLLECTION
+            </Link>
+            
+            <div className="border-t pt-4">
+              <p className="text-sm font-semibold text-muted-foreground px-4 mb-2">CATEGORIES</p>
+              <Link
+                href="/products?category=Jamdani Paithani"
+                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-category-jamdani"
+              >
+                Jamdani Paithani
+              </Link>
+              <Link
+                href="/products?category=Khun Irkal"
+                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-category-khun"
+              >
+                Khun / Irkal (Ilkal)
+              </Link>
+              <Link
+                href="/products?category=Ajrakh Modal"
+                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-category-ajrakh"
+              >
+                Ajrakh Modal
+              </Link>
+              <Link
+                href="/products?category=Mul Mul Cotton"
+                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-category-mul"
+              >
+                Mul Mul Cotton
+              </Link>
+              <Link
+                href="/products?category=Khadi Cotton"
+                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-category-khadi"
+              >
+                Khadi Cotton
+              </Link>
+              <Link
+                href="/products?category=Patch Work"
+                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-category-patch"
+              >
+                Patch Work
+              </Link>
+              <Link
+                href="/products?category=Pure Linen"
+                className="text-base py-2 px-4 block rounded-md hover-elevate"
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-category-linen"
+              >
+                Pure Linen
+              </Link>
+            </div>
+
+            <div className="border-t pt-4">
+              <Link
+                href="/sale"
+                className={`text-lg font-medium py-2 px-4 block rounded-md hover-elevate ${navState.isSale ? "bg-primary/10 text-primary" : ""}`}
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-link-sale"
+              >
+                SALE
+              </Link>
+              <Link
+                href="/about"
+                className={`text-lg font-medium py-2 px-4 block rounded-md hover-elevate ${navState.isAbout ? "bg-primary/10 text-primary" : ""}`}
+                onClick={() => setMobileMenuOpen(false)}
+                data-testid="mobile-link-about"
+              >
+                ABOUT US
+              </Link>
+              <button
+                onClick={() => {
+                  handleContactClick({} as MouseEvent<HTMLButtonElement>);
+                  setMobileMenuOpen(false);
+                }}
+                className={`text-lg font-medium py-2 px-4 block rounded-md hover-elevate text-left w-full ${navState.isContact ? "bg-primary/10 text-primary" : ""}`}
+                data-testid="mobile-link-contact"
+              >
+                CONTACT
+              </button>
+            </div>
+          </nav>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }
