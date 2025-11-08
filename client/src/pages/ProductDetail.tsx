@@ -276,8 +276,9 @@ export default function ProductDetail() {
               )}
             </div>
 
-            <div className="flex gap-3 mb-8">
+            <div className="flex flex-wrap gap-3 mb-8">
               <Button
+                className="flex-1 min-w-[140px]"
                 disabled={!product.inStock || addToCartMutation.isPending}
                 onClick={() => addToCartMutation.mutate({ productId: product._id, quantity })}
                 data-testid="button-add-to-cart"
@@ -286,6 +287,7 @@ export default function ProductDetail() {
                 Add to Cart
               </Button>
               <Button
+                className="flex-1 min-w-[140px]"
                 variant="default"
                 disabled={!product.inStock || buyNowMutation.isPending}
                 onClick={handleBuyNow}
@@ -296,6 +298,7 @@ export default function ProductDetail() {
               </Button>
               <Button
                 variant="outline"
+                size="icon"
                 onClick={() => addToWishlistMutation.mutate(product._id)}
                 disabled={addToWishlistMutation.isPending}
                 data-testid="button-add-to-wishlist"
