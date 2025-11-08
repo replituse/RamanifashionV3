@@ -22,7 +22,7 @@ export default function Sale() {
   const [sortBy, setSortBy] = useState("discount");
   const [order, setOrder] = useState("desc");
   const [page, setPage] = useState(1);
-  const [priceRange, setPriceRange] = useState([500, 50000]);
+  const [priceRange, setPriceRange] = useState([1000, 10000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedFabrics, setSelectedFabrics] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
@@ -153,7 +153,7 @@ export default function Sale() {
     setSelectedFabrics([]);
     setSelectedColors([]);
     setSelectedOccasions([]);
-    setPriceRange([500, 50000]);
+    setPriceRange([1000, 10000]);
     setInStockOnly(false);
     setPage(1);
   };
@@ -329,9 +329,9 @@ export default function Sale() {
                       setPriceRange(val);
                       setPage(1);
                     }}
-                    min={500}
-                    max={50000}
-                    step={500}
+                    min={1000}
+                    max={10000}
+                    step={100}
                     data-testid="slider-price-range"
                   />
                   <div className="flex items-center justify-between text-sm">
@@ -489,7 +489,10 @@ export default function Sale() {
                   <div className="flex justify-center items-center gap-2 mt-8">
                     <Button
                       variant="outline"
-                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      onClick={() => {
+                        setPage(p => Math.max(1, p - 1));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       disabled={page === 1}
                       data-testid="button-prev-page"
                     >
@@ -500,7 +503,10 @@ export default function Sale() {
                     </span>
                     <Button
                       variant="outline"
-                      onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
+                      onClick={() => {
+                        setPage(p => Math.min(pagination.pages, p + 1));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       disabled={page === pagination.pages}
                       data-testid="button-next-page"
                     >

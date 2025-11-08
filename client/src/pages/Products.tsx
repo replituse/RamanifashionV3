@@ -22,7 +22,7 @@ export default function Products() {
   const [sortBy, setSortBy] = useState("");
   const [order, setOrder] = useState("");
   const [page, setPage] = useState(1);
-  const [priceRange, setPriceRange] = useState([500, 50000]);
+  const [priceRange, setPriceRange] = useState([1000, 10000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedFabrics, setSelectedFabrics] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
@@ -154,7 +154,7 @@ export default function Products() {
     setSelectedFabrics([]);
     setSelectedColors([]);
     setSelectedOccasions([]);
-    setPriceRange([500, 50000]);
+    setPriceRange([1000, 10000]);
     setInStockOnly(false);
     setPage(1);
   };
@@ -311,9 +311,9 @@ export default function Products() {
                       setPriceRange(val);
                       setPage(1);
                     }}
-                    min={500}
-                    max={50000}
-                    step={500}
+                    min={1000}
+                    max={10000}
+                    step={100}
                     data-testid="slider-price-range"
                   />
                   <div className="flex items-center justify-between text-sm">
@@ -473,7 +473,10 @@ export default function Products() {
                     <Button 
                       variant="outline" 
                       disabled={page === 1}
-                      onClick={() => setPage(p => p - 1)}
+                      onClick={() => {
+                        setPage(p => p - 1);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       data-testid="button-page-prev"
                     >
                       Previous
@@ -484,7 +487,10 @@ export default function Products() {
                         <Button
                           key={pageNum}
                           variant={page === pageNum ? "default" : "outline"}
-                          onClick={() => setPage(pageNum)}
+                          onClick={() => {
+                            setPage(pageNum);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
                           data-testid={`button-page-${pageNum}`}
                         >
                           {pageNum}
@@ -494,7 +500,10 @@ export default function Products() {
                     <Button 
                       variant="outline" 
                       disabled={page === pagination.pages}
-                      onClick={() => setPage(p => p + 1)}
+                      onClick={() => {
+                        setPage(p => p + 1);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       data-testid="button-page-next"
                     >
                       Next
