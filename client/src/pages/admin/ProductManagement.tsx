@@ -704,6 +704,68 @@ export default function ProductManagement() {
                   </div>
                 </div>
 
+                {/* Product Specifications */}
+                <div className="space-y-4 border-t pt-4">
+                  <h3 className="font-semibold text-sm">Product Specifications</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="fabricComposition" data-testid="label-fabric-composition">Fabric Composition</Label>
+                      <Input
+                        id="fabricComposition"
+                        value={productForm.fabricComposition}
+                        onChange={(e) => setProductForm({...productForm, fabricComposition: e.target.value})}
+                        placeholder="e.g., 100% Cotton Silk"
+                        data-testid="input-fabric-composition"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="dimensions" data-testid="label-dimensions">Dimensions</Label>
+                      <Input
+                        id="dimensions"
+                        value={productForm.dimensions}
+                        onChange={(e) => setProductForm({...productForm, dimensions: e.target.value})}
+                        placeholder="e.g., 6 meters x 1.2 meters"
+                        data-testid="input-dimensions"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="weight" data-testid="label-weight">Weight</Label>
+                      <Input
+                        id="weight"
+                        value={productForm.weight}
+                        onChange={(e) => setProductForm({...productForm, weight: e.target.value})}
+                        placeholder="e.g., 380g"
+                        data-testid="input-weight"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="countryOfOrigin" data-testid="label-country-of-origin">Country of Origin</Label>
+                      <Input
+                        id="countryOfOrigin"
+                        value={productForm.countryOfOrigin}
+                        onChange={(e) => setProductForm({...productForm, countryOfOrigin: e.target.value})}
+                        placeholder="e.g., India"
+                        data-testid="input-country-of-origin"
+                      />
+                    </div>
+
+                    <div className="space-y-2 col-span-2">
+                      <Label htmlFor="careInstructions" data-testid="label-care-instructions">Care Instructions</Label>
+                      <Textarea
+                        id="careInstructions"
+                        value={productForm.careInstructions}
+                        onChange={(e) => setProductForm({...productForm, careInstructions: e.target.value})}
+                        placeholder="e.g., Dry clean recommended"
+                        rows={2}
+                        data-testid="input-care-instructions"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex justify-end gap-2">
                   <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)} data-testid="button-cancel">
                     Cancel
@@ -1044,6 +1106,46 @@ export default function ProductManagement() {
                                       data-testid="input-edit-color"
                                     />
                                   </div>
+
+                                  <div className="space-y-2">
+                                    <Label htmlFor="edit-occasion" data-testid="label-edit-occasion">Occasion</Label>
+                                    <Input
+                                      id="edit-occasion"
+                                      value={productForm.occasion}
+                                      onChange={(e) => setProductForm({...productForm, occasion: e.target.value})}
+                                      data-testid="input-edit-occasion"
+                                    />
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    <Label htmlFor="edit-pattern" data-testid="label-edit-pattern">Pattern</Label>
+                                    <Input
+                                      id="edit-pattern"
+                                      value={productForm.pattern}
+                                      onChange={(e) => setProductForm({...productForm, pattern: e.target.value})}
+                                      data-testid="input-edit-pattern"
+                                    />
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    <Label htmlFor="edit-workType" data-testid="label-edit-work-type">Work Type</Label>
+                                    <Input
+                                      id="edit-workType"
+                                      value={productForm.workType}
+                                      onChange={(e) => setProductForm({...productForm, workType: e.target.value})}
+                                      data-testid="input-edit-work-type"
+                                    />
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    <Label htmlFor="edit-sareeLength" data-testid="label-edit-saree-length">Saree Length</Label>
+                                    <Input
+                                      id="edit-sareeLength"
+                                      value={productForm.sareeLength}
+                                      onChange={(e) => setProductForm({...productForm, sareeLength: e.target.value})}
+                                      data-testid="input-edit-saree-length"
+                                    />
+                                  </div>
                                 </div>
 
                                 <div className="flex gap-6 flex-wrap">
@@ -1095,6 +1197,68 @@ export default function ProductManagement() {
                                       data-testid="checkbox-edit-is-bestseller"
                                     />
                                     <Label htmlFor="edit-isBestseller" data-testid="label-edit-is-bestseller">Bestseller</Label>
+                                  </div>
+                                </div>
+
+                                {/* Product Specifications */}
+                                <div className="space-y-4 border-t pt-4">
+                                  <h3 className="font-semibold text-sm">Product Specifications</h3>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                      <Label htmlFor="edit-fabricComposition" data-testid="label-edit-fabric-composition">Fabric Composition</Label>
+                                      <Input
+                                        id="edit-fabricComposition"
+                                        value={productForm.fabricComposition}
+                                        onChange={(e) => setProductForm({...productForm, fabricComposition: e.target.value})}
+                                        placeholder="e.g., 100% Cotton Silk"
+                                        data-testid="input-edit-fabric-composition"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <Label htmlFor="edit-dimensions" data-testid="label-edit-dimensions">Dimensions</Label>
+                                      <Input
+                                        id="edit-dimensions"
+                                        value={productForm.dimensions}
+                                        onChange={(e) => setProductForm({...productForm, dimensions: e.target.value})}
+                                        placeholder="e.g., 6 meters x 1.2 meters"
+                                        data-testid="input-edit-dimensions"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <Label htmlFor="edit-weight" data-testid="label-edit-weight">Weight</Label>
+                                      <Input
+                                        id="edit-weight"
+                                        value={productForm.weight}
+                                        onChange={(e) => setProductForm({...productForm, weight: e.target.value})}
+                                        placeholder="e.g., 380g"
+                                        data-testid="input-edit-weight"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <Label htmlFor="edit-countryOfOrigin" data-testid="label-edit-country-of-origin">Country of Origin</Label>
+                                      <Input
+                                        id="edit-countryOfOrigin"
+                                        value={productForm.countryOfOrigin}
+                                        onChange={(e) => setProductForm({...productForm, countryOfOrigin: e.target.value})}
+                                        placeholder="e.g., India"
+                                        data-testid="input-edit-country-of-origin"
+                                      />
+                                    </div>
+
+                                    <div className="space-y-2 col-span-2">
+                                      <Label htmlFor="edit-careInstructions" data-testid="label-edit-care-instructions">Care Instructions</Label>
+                                      <Textarea
+                                        id="edit-careInstructions"
+                                        value={productForm.careInstructions}
+                                        onChange={(e) => setProductForm({...productForm, careInstructions: e.target.value})}
+                                        placeholder="e.g., Dry clean recommended"
+                                        rows={2}
+                                        data-testid="input-edit-care-instructions"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
 
