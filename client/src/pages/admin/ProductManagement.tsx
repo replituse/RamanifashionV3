@@ -522,27 +522,69 @@ export default function ProductManagement() {
                     ))}
                   </div>
                   {uploadedImages.length < 5 && (
-                    <>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="hidden"
-                        onChange={handleImageUpload}
-                        data-testid="input-file-upload-hidden"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={isUploading}
-                        data-testid="button-upload-images"
-                      >
-                        <Upload className="mr-2 h-4 w-4" />
-                        {isUploading ? "Uploading..." : "Upload Images"}
-                      </Button>
-                    </>
+                    <Tabs defaultValue="device" className="w-full">
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="device" data-testid="tab-upload-device">
+                          <Upload className="mr-2 h-4 w-4" />
+                          Upload from Device
+                        </TabsTrigger>
+                        <TabsTrigger value="url" data-testid="tab-upload-url">
+                          <LinkIcon className="mr-2 h-4 w-4" />
+                          Upload via Link
+                        </TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="device" className="space-y-2">
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          className="hidden"
+                          onChange={handleImageUpload}
+                          data-testid="input-file-upload-hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={isUploading}
+                          data-testid="button-upload-images"
+                        >
+                          <Upload className="mr-2 h-4 w-4" />
+                          {isUploading ? "Uploading..." : "Upload Images"}
+                        </Button>
+                        <p className="text-xs text-muted-foreground">
+                          Max file size: 50 MB. Supports JPEG, PNG, GIF, and WebP.
+                        </p>
+                      </TabsContent>
+                      <TabsContent value="url" className="space-y-2">
+                        <div className="flex gap-2">
+                          <Input
+                            placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
+                            value={imageUrl}
+                            onChange={(e) => setImageUrl(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddImageUrl();
+                              }
+                            }}
+                            data-testid="input-image-url"
+                          />
+                          <Button
+                            type="button"
+                            onClick={handleAddImageUrl}
+                            data-testid="button-add-url"
+                          >
+                            Add
+                          </Button>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Enter a direct link to an image (up to 50 MB).
+                        </p>
+                      </TabsContent>
+                    </Tabs>
                   )}
                 </div>
 
@@ -1021,27 +1063,69 @@ export default function ProductManagement() {
                                     ))}
                                   </div>
                                   {uploadedImages.length < 5 && (
-                                    <>
-                                      <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        accept="image/*"
-                                        multiple
-                                        className="hidden"
-                                        onChange={handleImageUpload}
-                                        data-testid="input-edit-file-upload-hidden"
-                                      />
-                                      <Button
-                                        type="button"
-                                        variant="outline"
-                                        onClick={() => fileInputRef.current?.click()}
-                                        disabled={isUploading}
-                                        data-testid="button-edit-upload-images"
-                                      >
-                                        <Upload className="mr-2 h-4 w-4" />
-                                        {isUploading ? "Uploading..." : "Upload Images"}
-                                      </Button>
-                                    </>
+                                    <Tabs defaultValue="device" className="w-full">
+                                      <TabsList className="grid w-full grid-cols-2">
+                                        <TabsTrigger value="device" data-testid="tab-edit-upload-device">
+                                          <Upload className="mr-2 h-4 w-4" />
+                                          Upload from Device
+                                        </TabsTrigger>
+                                        <TabsTrigger value="url" data-testid="tab-edit-upload-url">
+                                          <LinkIcon className="mr-2 h-4 w-4" />
+                                          Upload via Link
+                                        </TabsTrigger>
+                                      </TabsList>
+                                      <TabsContent value="device" className="space-y-2">
+                                        <input
+                                          ref={fileInputRef}
+                                          type="file"
+                                          accept="image/*"
+                                          multiple
+                                          className="hidden"
+                                          onChange={handleImageUpload}
+                                          data-testid="input-edit-file-upload-hidden"
+                                        />
+                                        <Button
+                                          type="button"
+                                          variant="outline"
+                                          className="w-full"
+                                          onClick={() => fileInputRef.current?.click()}
+                                          disabled={isUploading}
+                                          data-testid="button-edit-upload-images"
+                                        >
+                                          <Upload className="mr-2 h-4 w-4" />
+                                          {isUploading ? "Uploading..." : "Upload Images"}
+                                        </Button>
+                                        <p className="text-xs text-muted-foreground">
+                                          Max file size: 50 MB. Supports JPEG, PNG, GIF, and WebP.
+                                        </p>
+                                      </TabsContent>
+                                      <TabsContent value="url" className="space-y-2">
+                                        <div className="flex gap-2">
+                                          <Input
+                                            placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
+                                            value={imageUrl}
+                                            onChange={(e) => setImageUrl(e.target.value)}
+                                            onKeyDown={(e) => {
+                                              if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                handleAddImageUrl();
+                                              }
+                                            }}
+                                            data-testid="input-edit-image-url"
+                                          />
+                                          <Button
+                                            type="button"
+                                            onClick={handleAddImageUrl}
+                                            data-testid="button-edit-add-url"
+                                          >
+                                            Add
+                                          </Button>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground">
+                                          Enter a direct link to an image (up to 50 MB).
+                                        </p>
+                                      </TabsContent>
+                                    </Tabs>
                                   )}
                                 </div>
 
