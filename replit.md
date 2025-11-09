@@ -10,6 +10,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**November 9, 2025 - Price Range Filter Bug Fix:**
+- Fixed critical filtering bug preventing products from appearing in New Arrivals, Trending, and Sale sections
+- Root cause: Default price range filter was set to ₹1000-₹10000, excluding products below ₹1000
+- Solution: Expanded default price range to ₹0-₹50,000 across all collection pages
+- Updated files: NewArrivals.tsx, TrendingCollection.tsx, Sale.tsx
+- Impact: Products of all price ranges now correctly appear in their respective showcase sections
+- Future enhancement recommended: Implement dynamic price range based on actual product data
+
 **November 8, 2025 - Product Management Form Enhancement:**
 - Added support for up to 5 product images (Main Image + 4 additional images)
 - Enhanced product form with all MongoDB schema fields:
