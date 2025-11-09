@@ -22,7 +22,7 @@ export default function NewArrivals() {
   const [sortBy, setSortBy] = useState("");
   const [order, setOrder] = useState("");
   const [page, setPage] = useState(1);
-  const [priceRange, setPriceRange] = useState([1000, 10000]);
+  const [priceRange, setPriceRange] = useState([0, 50000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedFabrics, setSelectedFabrics] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
@@ -157,7 +157,7 @@ export default function NewArrivals() {
     setSelectedFabrics([]);
     setSelectedColors([]);
     setSelectedOccasions([]);
-    setPriceRange([1000, 10000]);
+    setPriceRange([0, 50000]);
     setInStockOnly(false);
     setPage(1);
   };
@@ -326,8 +326,8 @@ export default function NewArrivals() {
                       setPriceRange(val);
                       setPage(1);
                     }}
-                    min={1000}
-                    max={10000}
+                    min={0}
+                    max={50000}
                     step={100}
                     data-testid="slider-price-range"
                   />
