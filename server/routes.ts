@@ -145,44 +145,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Legacy product mutation routes - now protected with admin authentication
-  app.post("/api/products", authenticateAdmin, async (req, res) => {
-    try {
-      const product = new Product(req.body);
-      await product.save();
-      res.status(201).json(product);
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-
-  app.put("/api/products/:id", authenticateAdmin, async (req, res) => {
-    try {
-      const product = await Product.findByIdAndUpdate(
-        req.params.id,
-        { ...req.body, updatedAt: new Date() },
-        { new: true }
-      );
-      if (!product) {
-        return res.status(404).json({ error: 'Product not found' });
-      }
-      res.json(product);
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-
-  app.delete("/api/products/:id", authenticateAdmin, async (req, res) => {
-    try {
-      const product = await Product.findByIdAndDelete(req.params.id);
-      if (!product) {
-        return res.status(404).json({ error: 'Product not found' });
-      }
-      res.json({ message: 'Product deleted successfully' });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
-    }
-  });
+  // NOTE: Product mutations (create/update/delete) are now exclusively handled 
+  // through the /api/admin/products endpoints with admin authentication.
+  // Public access to products is read-only via GET /api/products and GET /api/products/:id
 
   // User Auth Routes
   app.post("/api/auth/register", async (req, res) => {
