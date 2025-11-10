@@ -31,22 +31,13 @@ import {
 
 export default function AdminDashboard() {
   const [location] = useLocation();
-  const adminToken = localStorage.getItem("adminToken");
+  const adminToken = localStorage.getItem("admin_token");
 
   const { data: analytics, isLoading } = useQuery({
     queryKey: ["/api/admin/analytics"],
     enabled: !!adminToken,
     refetchInterval: 30000,
   });
-
-  if (!adminToken) {
-    setLocation("/login");
-    return null;
-  }
-
-  function setLocation(path: string) {
-    window.location.href = path;
-  }
 
   // Use real data from API, with fallback for empty data
   const salesData = analytics?.salesData && analytics.salesData.length > 0 

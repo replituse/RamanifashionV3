@@ -1,0 +1,95 @@
+Task: Fix admin login logic, add admin signup, redesign categories hover section, and style scroll-up arrow in the existing eCommerce project.
+
+1️⃣ Admin Login Redirection & Access Fix
+
+Issue:
+When manually entering /admin in the URL, it opens the admin login page but after mobile verification, it redirects to the user login page instead of the admin dashboard.
+
+Required Fix:
+
+When /admin is opened, it should properly display the Admin Login Page.
+
+After entering the correct credentials:
+
+Email: admin@ramanifashion.com
+
+Password: Admin@123
+
+OTP: 123456
+→ Redirect the admin to the Admin Dashboard page.
+
+Ensure that the admin panel loads fully with all admin options visible (orders, users, products, categories, etc.).
+
+Prevent normal users from accessing /admin (if a normal user tries, show “Access Denied” or redirect to home).
+
+Make sure mobile OTP verification works seamlessly with the above credentials and does not redirect to user login.
+
+2️⃣ Add “Admin Signup” Option in Login Modal
+
+Requirement:
+When clicking on the user icon → Login, add an extra button or link labeled “Sign Up as Admin” below the “Login as Admin” option.
+
+Functionality:
+
+When clicked, it should open a small Admin Signup form (fields: name, email, mobile, password).
+
+After signup, the admin should receive OTP verification (use same test OTP: 123456).
+
+On successful signup, redirect to the Admin Dashboard.
+
+3️⃣ Category Hover Section Redesign (Use Uploaded 1st Image Style)
+
+Current Issue: Categories are shown as vertical cards with text — looks plain.
+Required Fix:
+
+Redesign the Categories section horizontally (in a single row) — 7 categories in one line.
+
+Use the uploaded image reference style: circular category frames, attractive background, and subtle border.
+
+Add smooth hover effects:
+
+Slight zoom-in or fade animation on hover.
+
+Category name appears elegantly below the image.
+
+Add a background image for the section (soft texture, same color tone as website).
+
+Make sure layout is fully responsive across desktop and mobile.
+
+4️⃣ Scroll-to-Top Arrow Button
+
+Requirement:
+
+Add a “Back to Top” arrow button in the bottom-left corner of the site.
+
+The button should:
+
+Match the website’s pink color theme.
+
+Be round, elevated with shadow, and visible only when scrolled down.
+
+Smoothly scroll to top when clicked.
+
+Have a hover animation (slight scale-up or color lighten effect).
+
+🧭 Additional Notes
+
+Keep all design elements consistent with the existing Ramani Fashion branding and color palette.
+
+Maintain smooth animations and responsiveness.
+
+Test both user and admin login/signup flows thoroughly.
+
+Verify that /admin URL access works perfectly and only for authorized admin users.
+
+✅ Expected Outcome:
+
+/admin opens and works perfectly for admin login and OTP verification.
+
+Successful login redirects to the admin dashboard (not user login).
+
+“Sign Up as Admin” option added under login modal.
+
+Category hover section redesigned horizontally with smooth animations.
+
+Scroll-to-top arrow styled in pink theme and functions properly.

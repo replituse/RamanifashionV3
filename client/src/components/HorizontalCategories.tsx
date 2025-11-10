@@ -38,11 +38,11 @@ export default function HorizontalCategories({ categories }: HorizontalCategorie
         </motion.div>
 
         <div className="relative">
-          <div className="flex gap-6 md:gap-8 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4 lg:gap-5 pb-6">
             {categories.map((category, index) => (
               <motion.div
                 key={category.name}
-                className="flex-shrink-0 w-40 md:w-48 lg:w-56 snap-center"
+                className="flex-shrink-0 w-28 sm:w-32 md:w-36 lg:w-36"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

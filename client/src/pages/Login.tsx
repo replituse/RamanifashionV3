@@ -43,13 +43,26 @@ export default function Login() {
   const adminLoginMutation = useMutation({
     mutationFn: (data: any) => apiRequest("/api/admin/login", "POST", data),
     onSuccess: (data: any) => {
-      localStorage.setItem("adminToken", data.token);
-      localStorage.setItem("admin", JSON.stringify(data.admin));
+      localStorage.setItem("admin_token", data.token);
+      localStorage.setItem("admin_user", JSON.stringify(data.admin));
       toast({ title: "Admin login successful!" });
       setLocation("/admin/dashboard");
     },
     onError: (error: any) => {
       toast({ title: "Error", description: error.message || "Invalid admin credentials", variant: "destructive" });
+    },
+  });
+
+  const adminSignupMutation = useMutation({
+    mutationFn: (data: any) => apiRequest("/api/admin/signup", "POST", data),
+    onSuccess: (data: any) => {
+      localStorage.setItem("admin_token", data.token);
+      localStorage.setItem("admin_user", JSON.stringify(data.admin));
+      toast({ title: "Admin signup successful!", description: "Welcome to the admin panel" });
+      setLocation("/admin/dashboard");
+    },
+    onError: (error: any) => {
+      toast({ title: "Error", description: error.message || "Signup failed", variant: "destructive" });
     },
   });
 
@@ -289,7 +302,7 @@ export default function Login() {
                 </div>
               )}
 
-              <div className="text-center pt-4 border-t">
+              <div className="text-center pt-4 border-t space-y-2">
                 <Button
                   type="button"
                   variant="outline"
@@ -304,6 +317,17 @@ export default function Login() {
                 >
                   {isAdminLogin ? "Back to User Login" : "Login as Admin"}
                 </Button>
+                {!isAdminLogin && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setLocation("/admin")}
+                    data-testid="button-admin-signup"
+                    className="w-full text-sm"
+                  >
+                    Sign Up as Admin
+                  </Button>
+                )}
               </div>
             </form>
           </CardContent>
