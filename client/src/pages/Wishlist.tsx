@@ -166,7 +166,7 @@ export default function Wishlist() {
                     Out of Stock
                   </div>
                 )}
-                {product.isNew && product.inStock && (
+                {product.isNewArrival && product.inStock && (
                   <div className="absolute top-2 left-2 bg-green-500 text-white px-3 py-1 text-sm font-semibold rounded">
                     New
                   </div>

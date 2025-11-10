@@ -73,7 +73,7 @@ export default function Home() {
   const { toast } = useToast();
 
   const { data: newArrivalsData } = useQuery({
-    queryKey: ["/api/products?isNew=true&limit=6"],
+    queryKey: ["/api/products?isNewArrival=true&limit=6"],
   });
 
   const { data: trendingData } = useQuery({

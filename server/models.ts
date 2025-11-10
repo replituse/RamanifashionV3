@@ -18,7 +18,7 @@ const productSchema = new Schema({
   sareeLength: { type: String },
   inStock: { type: Boolean, default: true },
   stockQuantity: { type: Number, default: 0 },
-  isNew: { type: Boolean, default: false },
+  isNewArrival: { type: Boolean, default: false },
   isBestseller: { type: Boolean, default: false },
   isTrending: { type: Boolean, default: false },
   rating: { type: Number, default: 0 },

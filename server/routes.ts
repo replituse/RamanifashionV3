@@ -92,7 +92,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       if (inStock === 'true') query.inStock = true;
-      if (req.query.isNew === 'true') query.isNew = true;
+      if (req.query.isNewArrival === 'true' || req.query.isNew === 'true') query.isNewArrival = true;
       if (req.query.isBestseller === 'true') query.isBestseller = true;
       if (req.query.isTrending === 'true') query.isTrending = true;
       
@@ -791,7 +791,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       if (inStock === 'true') query.inStock = true;
-      if (req.query.isNew === 'true') query.isNew = true;
+      if (req.query.isNewArrival === 'true' || req.query.isNew === 'true') query.isNewArrival = true;
       if (req.query.isBestseller === 'true') query.isBestseller = true;
       if (req.query.isTrending === 'true') query.isTrending = true;
       
@@ -1053,7 +1053,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               sareeLength: row['Saree Length'] || row.sareeLength,
               stockQuantity: parseInt(row['Stock Quantity'] || row.stockQuantity || '0'),
               inStock: row['In Stock'] === 'Yes' || row.inStock === true || parseInt(row['Stock Quantity'] || row.stockQuantity || '0') > 0,
-              isNew: row['Is New'] === 'Yes' || row.isNew === true,
+              isNewArrival: row['Is New'] === 'Yes' || row.isNewArrival === true,
               isBestseller: row['Is Bestseller'] === 'Yes' || row.isBestseller === true,
               isTrending: row['Is Trending'] === 'Yes' || row.isTrending === true,
             };
@@ -1111,7 +1111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'Saree Length': product.sareeLength || '',
         'Stock Quantity': product.stockQuantity || 0,
         'In Stock': product.inStock ? 'Yes' : 'No',
-        'Is New': product.isNew ? 'Yes' : 'No',
+        'Is New': product.isNewArrival ? 'Yes' : 'No',
         'Is Bestseller': product.isBestseller ? 'Yes' : 'No',
         'Is Trending': product.isTrending ? 'Yes' : 'No',
         Images: (product.images || []).join(', '),

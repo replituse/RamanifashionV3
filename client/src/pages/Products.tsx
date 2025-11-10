@@ -523,7 +523,7 @@ export default function Products() {
                           discount={discount || undefined}
                           rating={product.rating}
                           reviewCount={product.reviewCount}
-                          isNew={product.isNew}
+                          isNewArrival={product.isNewArrival}
                           isBestseller={product.isBestseller}
                           context="products"
                         />

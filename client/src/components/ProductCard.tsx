@@ -30,7 +30,7 @@ interface ProductCardProps {
   discount?: number;
   rating?: number;
   reviewCount?: number;
-  isNew?: boolean;
+  isNewArrival?: boolean;
   isBestseller?: boolean;
   context?: 'new-arrivals' | 'trending' | 'sale' | 'products';
   onAddToCart?: () => void;
@@ -49,7 +49,7 @@ export default function ProductCard({
   discount,
   rating = 0,
   reviewCount = 0,
-  isNew,
+  isNewArrival,
   isBestseller,
   context,
   onAddToCart,

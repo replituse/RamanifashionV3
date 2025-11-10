@@ -62,7 +62,7 @@ export default function NewArrivals() {
     limit: "12",
     minPrice: priceRange[0].toString(),
     maxPrice: priceRange[1].toString(),
-    isNew: "true",
+    isNewArrival: "true",
   });
 
   if (sortBy && order) {
@@ -106,7 +106,7 @@ export default function NewArrivals() {
 
   // Build price range query params (without page/limit)
   const priceRangeParams = new URLSearchParams({
-    isNew: "true",
+    isNewArrival: "true",
   });
   if (selectedCategories.length > 0) {
     priceRangeParams.append("category", selectedCategories.join(","));
@@ -519,7 +519,7 @@ export default function NewArrivals() {
                           discount={discount}
                           rating={product.rating}
                           reviewCount={product.reviewCount}
-                          isNew={product.isNew}
+                          isNewArrival={product.isNewArrival}
                           isBestseller={product.isBestseller}
                           context="new-arrivals"
                         />

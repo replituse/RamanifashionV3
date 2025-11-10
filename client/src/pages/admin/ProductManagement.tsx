@@ -69,7 +69,7 @@ export default function ProductManagement() {
     sareeLength: "",
     stockQuantity: "",
     inStock: true,
-    isNew: false,
+    isNewArrival: false,
     isTrending: false,
     isBestseller: false,
     fabricComposition: "",
@@ -310,7 +310,7 @@ export default function ProductManagement() {
       sareeLength: "",
       stockQuantity: "",
       inStock: true,
-      isNew: false,
+      isNewArrival: false,
       isTrending: false,
       isBestseller: false,
       fabricComposition: "",
@@ -341,7 +341,7 @@ export default function ProductManagement() {
       sareeLength: productForm.sareeLength || undefined,
       stockQuantity: parseInt(productForm.stockQuantity) || 0,
       inStock: productForm.inStock,
-      isNew: productForm.isNew,
+      isNewArrival: productForm.isNewArrival,
       isTrending: productForm.isTrending,
       isBestseller: productForm.isBestseller,
       images: uploadedImages,
@@ -381,7 +381,7 @@ export default function ProductManagement() {
       sareeLength: product.sareeLength || "",
       stockQuantity: product.stockQuantity?.toString() || "",
       inStock: product.inStock !== false,
-      isNew: product.isNew || false,
+      isNewArrival: product.isNewArrival || false,
       isTrending: product.isTrending || false,
       isBestseller: product.isBestseller || false,
       fabricComposition: product.specifications?.fabricComposition || "",
@@ -757,12 +757,12 @@ export default function ProductManagement() {
 
                   <div className="flex items-center gap-2">
                     <Checkbox
-                      id="isNew"
-                      checked={productForm.isNew}
-                      onCheckedChange={(checked) => setProductForm({...productForm, isNew: checked as boolean})}
+                      id="isNewArrival"
+                      checked={productForm.isNewArrival}
+                      onCheckedChange={(checked) => setProductForm({...productForm, isNewArrival: checked as boolean})}
                       data-testid="checkbox-is-new"
                     />
-                    <Label htmlFor="isNew" data-testid="label-is-new">New Arrival</Label>
+                    <Label htmlFor="isNewArrival" data-testid="label-is-new">New Arrival</Label>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -1295,12 +1295,12 @@ export default function ProductManagement() {
 
                                   <div className="flex items-center gap-2">
                                     <Checkbox
-                                      id="edit-isNew"
-                                      checked={productForm.isNew}
-                                      onCheckedChange={(checked) => setProductForm({...productForm, isNew: checked as boolean})}
+                                      id="edit-isNewArrival"
+                                      checked={productForm.isNewArrival}
+                                      onCheckedChange={(checked) => setProductForm({...productForm, isNewArrival: checked as boolean})}
                                       data-testid="checkbox-edit-is-new"
                                     />
-                                    <Label htmlFor="edit-isNew" data-testid="label-edit-is-new">New Arrival</Label>
+                                    <Label htmlFor="edit-isNewArrival" data-testid="label-edit-is-new">New Arrival</Label>
                                   </div>
 
                                   <div className="flex items-center gap-2">

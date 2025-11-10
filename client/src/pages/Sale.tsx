@@ -526,7 +526,7 @@ export default function Sale() {
                           discount={discount}
                           rating={product.rating}
                           reviewCount={product.reviewCount}
-                          isNew={product.isNew}
+                          isNewArrival={product.isNewArrival}
                           isBestseller={product.isBestseller}
                           context="sale"
                         />

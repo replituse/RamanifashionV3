@@ -520,7 +520,7 @@ export default function TrendingCollection() {
                           discount={discount}
                           rating={product.rating}
                           reviewCount={product.reviewCount}
-                          isNew={product.isNew}
+                          isNewArrival={product.isNewArrival}
                           isBestseller={product.isBestseller}
                           context="trending"
                         />

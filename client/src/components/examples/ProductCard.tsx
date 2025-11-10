@@ -15,7 +15,7 @@ export default function ProductCardExample() {
         discount={50}
         rating={4.5}
         reviewCount={128}
-        isNew={true}
+        isNewArrival={true}
         onAddToCart={() => console.log('Added to cart')}
         onAddToWishlist={() => console.log('Added to wishlist')}
         onClick={() => console.log('Product clicked')}

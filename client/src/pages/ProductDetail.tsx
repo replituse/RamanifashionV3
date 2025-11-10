@@ -205,7 +205,7 @@ export default function ProductDetail() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="flex gap-2 mb-2">
-              {product.isNew && <Badge variant="secondary" data-testid="badge-new">New</Badge>}
+              {product.isNewArrival && <Badge variant="secondary" data-testid="badge-new">New</Badge>}
               {product.isBestseller && <Badge variant="secondary" data-testid="badge-bestseller">Bestseller</Badge>}
             </div>
 
@@ -472,7 +472,7 @@ export default function ProductDetail() {
                     image={similarProduct.images?.[0] || "/api/placeholder/400/600"}
                     rating={similarProduct.rating}
                     reviewCount={similarProduct.reviewCount}
-                    isNew={similarProduct.isNew}
+                    isNewArrival={similarProduct.isNewArrival}
                     isBestseller={similarProduct.isBestseller}
                   />
                 </motion.div>
