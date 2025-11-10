@@ -10,6 +10,16 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**November 10, 2025 - Admin Credentials Fix:**
+- Fixed admin login authentication issue caused by incorrect seeded credentials
+- Updated admin user credentials in seed.ts:
+  - Email: admin@ramanifashion.com (was: pratikkadam@gmail.com)
+  - Password: Admin@123 (was: pk@123)
+  - Mobile: 9876543210 (was: 7304707775)
+- Test OTP remains: 123456
+- Created migration script to delete old admin users and reseed with correct credentials
+- Admin authentication now works properly with bcrypt password verification
+
 **November 9, 2025 - Dynamic Price Ranges & Automatic Sale Filtering:**
 - **Automatic Sale Detection:** Products with originalPrice > sellingPrice now automatically appear in sale section without manual isSale flag
 - **Dynamic Price Range Filters:** Price sliders now automatically adjust based on actual product prices in database and active filters

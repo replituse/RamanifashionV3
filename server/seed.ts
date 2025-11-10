@@ -547,18 +547,20 @@ export async function seedDatabase() {
     }
 
     // Seed admin user
-    const adminCount = await AdminUser.countDocuments();
-    if (adminCount === 0) {
+    const adminEmail = 'admin@ramanifashion.com';
+    const existingAdmin = await AdminUser.findOne({ email: adminEmail });
+    
+    if (!existingAdmin) {
       console.log('🌱 Seeding admin user...');
-      const hashedPassword = await bcrypt.hash('pk@123', 10);
+      const hashedPassword = await bcrypt.hash('Admin@123', 10);
       await AdminUser.create({
-        email: 'pratikkadam@gmail.com',
+        email: adminEmail,
         password: hashedPassword,
-        mobile: '7304707775',
+        mobile: '9876543210',
       });
       console.log('✅ Admin user seeded successfully');
     } else {
-      console.log(`✅ Admin user already exists, skipping seed`);
+      console.log(`✅ Admin user already exists (${adminEmail})`);
     }
   } catch (error) {
     console.error('❌ Error seeding database:', error);
