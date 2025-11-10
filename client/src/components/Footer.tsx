@@ -39,7 +39,7 @@ export default function Footer() {
                 data-testid="link-instagram-footer"
               >
                 <img src={instagramIcon} alt="Instagram" className="h-6 w-6 flex-shrink-0" />
-                <span className="text-xs font-medium text-black text-center leading-tight">@ramanifashionindia</span>
+                {/* <span className="text-xs font-medium text-black text-center leading-tight">@ramanifashionindia</span> */}
               </a>
               <a 
                 href="https://www.facebook.com/186191114586811" 
@@ -49,7 +49,7 @@ export default function Footer() {
                 data-testid="link-facebook-footer"
               >
                 <img src={facebookIcon} alt="Facebook" className="h-6 w-6 flex-shrink-0" />
-                <span className="text-xs font-medium text-black text-center leading-tight">Ramani<br />Fashion</span>
+                {/* <span className="text-xs font-medium text-black text-center leading-tight">Ramani<br />Fashion</span> */}
               </a>
               <a 
                 href="https://chat.whatsapp.com/GqIsU9ZF2SJ9buuSKxGFWB" 
@@ -59,7 +59,7 @@ export default function Footer() {
                 data-testid="link-whatsapp-footer"
               >
                 <SiWhatsapp className="h-6 w-6 text-green-600 flex-shrink-0" />
-                <span className="text-xs font-medium text-black text-center leading-tight">WhatsApp<br />Group</span>
+                {/* <span className="text-xs font-medium text-black text-center leading-tight">WhatsApp<br />Group</span> */}
               </a>
             </div>
           </div>

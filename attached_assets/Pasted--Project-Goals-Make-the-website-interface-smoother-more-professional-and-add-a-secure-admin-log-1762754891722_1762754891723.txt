@@ -1,0 +1,96 @@
+🧩 Project Goals
+
+Make the website interface smoother, more professional, and add a secure admin login page with OTP verification (MongoDB-based).
+
+🧱 Tasks to Implement
+1️⃣ Profile Dropdown Redesign
+
+Refer to the first uploaded image.
+
+Create a modern, elegant dropdown for the user profile section (when clicking the profile icon or username).
+
+It should include:
+
+Profile name (capitalize properly, e.g., “Pratik K”)
+
+Menu items: My Profile, My Orders, My Wishlist, Logout
+
+Add hover effects and smooth open/close transitions (fade or slide).
+
+Design style:
+
+Rounded corners
+
+Soft box-shadow
+
+Smooth animation (CSS transition or GSAP optional)
+
+Use minimalistic icons beside each menu item (e.g., fa-user, fa-box, fa-heart, fa-sign-out).
+
+2️⃣ Category Hover & Click Animation (Header Section)
+
+Refer to the second uploaded image.
+
+When hovering over header menu items (like “DRESSES”, “ACCS”, etc.), display a dropdown category section like shown in the image.
+
+The dropdown should:
+
+Appear with a smooth transition (slide-down or fade-in effect)
+
+Contain category thumbnails with names (e.g., “Long Dress”, “Midi Dress”, “Maxi Dress”, “Ethnic Dress”)
+
+Be fully responsive (work on all devices)
+
+On clicking a category image or title, navigate to that category’s product listing page.
+
+3️⃣ Admin Login Page via URL
+
+Add a route such as /Admin in the URL.
+When visited manually (e.g., https://yourwebsite.com/Admin), open a dedicated admin login page.
+
+🖥️ Admin Login Page Requirements:
+
+Fields:
+
+Email (text)
+
+Password (password input)
+
+OTP (displayed only after email/password verification)
+
+MongoDB Integration:
+
+Use existing MongoDB connection.
+
+Store the following admin credentials in admin_users collection:
+
+{
+  "email": "pratikkadam@gmail.com",
+  "password": "pk@123",
+  "mobile": "7304707775"
+}
+
+
+Login Flow:
+
+User enters email and password.
+
+Check credentials in MongoDB.
+
+If valid → show a masked mobile number (e.g., +91 89*******56).
+
+Ask to enter OTP (temporary OTP for testing: 123456).
+
+After OTP verification → redirect to the Admin Dashboard (/admin/dashboard).
+
+Error Handling:
+
+Show proper error messages: “Invalid credentials”, “Incorrect OTP”, etc.
+
+UI Design:
+
+Simple, elegant admin login box centered on the page.
+
+Use subtle shadows and modern typography.
+
+Add a small “Admin Login” heading with a minimal logo or lock icon.
