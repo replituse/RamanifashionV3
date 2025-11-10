@@ -10,6 +10,32 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**November 10, 2025 - UI/UX Enhancements Package:**
+- **Horizontal Categories Section:** Redesigned homepage categories from grid to horizontal scrollable layout
+  - Created HorizontalCategories.tsx component with circular decorative SVG frames
+  - Gold/amber ornate borders with smooth hover glow effects
+  - Responsive snap scrolling showing all 7 categories
+  - Background pattern with elegant transitions
+- **Enhanced Profile Dropdown:** Improved user menu styling and interactions
+  - Increased font size to text-base with semi-bold weight
+  - Added smooth hover animations (items slide slightly on hover)
+  - Increased drop shadow to shadow-2xl for better visibility
+  - Larger icons (h-5 w-5) for better visual hierarchy
+- **Scroll to Top Button:** Added floating navigation button
+  - Created ScrollToTopButton.tsx component with gold gradient theme
+  - Positioned in bottom-left corner, appears after 300px scroll
+  - Smooth animations with scale on hover and arrow lift effect
+  - Integrated into App.tsx with proper z-index layering
+- **Category Search Autocomplete:** Real-time search with polished UX
+  - Live category filtering with partial match support
+  - Autocomplete dropdown with clear button (X icon)
+  - Inline "No matching category found" feedback (no disruptive toasts)
+  - Click outside to close, navigates to category on selection
+  - Updated placeholder to "Search categories..." for clarity
+- **Admin Route Security:** Already implemented, no changes needed
+  - ProtectedAdminRoute component verified and working
+  - Access Denied page displays for unauthorized users
+
 **November 10, 2025 - Admin Credentials Fix:**
 - Fixed admin login authentication issue caused by incorrect seeded credentials
 - Updated admin user credentials in seed.ts:
