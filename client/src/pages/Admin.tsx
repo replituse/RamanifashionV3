@@ -174,8 +174,8 @@ export default function Admin() {
                   </p>
                   <Button
                     type="button"
-                    variant="link"
-                    className="p-0 h-auto text-xs"
+                    variant="ghost"
+                    className="p-0 h-auto text-xs text-primary hover:text-primary/80"
                     onClick={() => {
                       setStep('email');
                       passwordForm.reset();

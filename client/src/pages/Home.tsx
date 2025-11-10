@@ -3,6 +3,7 @@ import HeroCarousel from "@/components/HeroCarousel";
 import CategoryCard from "@/components/CategoryCard";
 import NewArrivalCard from "@/components/NewArrivalCard";
 import TestimonialCard from "@/components/TestimonialCard";
+import HorizontalCategories from "@/components/HorizontalCategories";
 import Footer from "@/components/Footer";
 import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -402,54 +403,7 @@ export default function Home() {
           </div>
         </motion.section>
 
-        <section className="max-w-7xl mx-auto px-4 py-8 md:py-12">
-          <motion.div 
-            className="text-center mb-8 md:mb-12"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-2xl md:text-3xl font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-6 md:px-8 py-2 md:py-3 inline-block" data-testid="text-section-categories">
-              Shop by Category
-            </h2>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {newCategories.map((category, index) => (
-              <motion.div 
-                key={category.name} 
-                className="flex flex-col items-center group cursor-pointer"
-                variants={fadeInUp}
-                transition={{ duration: 0.5 }}
-                onClick={() => {
-                  if (category.name === "Sale") {
-                    setLocation("/sale");
-                  } else {
-                    setLocation(`/products?category=${encodeURIComponent(category.name)}`);
-                  }
-                }}
-                data-testid={`category-card-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                <div className="w-full aspect-[2/3] overflow-hidden rounded-lg mb-3 md:mb-4 shadow-md hover:shadow-xl transition-shadow duration-300">
-                  <img 
-                    src={category.image} 
-                    alt={category.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="text-center text-xs md:text-base lg:text-lg font-bold font-serif bg-primary text-white border-2 border-white rounded-full px-3 md:px-6 py-1.5 md:py-2 inline-block">
-                  {category.name}
-                </h3>
-              </motion.div>
-            ))}
-          </motion.div>
-        </section>
+        <HorizontalCategories categories={newCategories} />
 
         <motion.section 
           className="py-8 md:py-16" 

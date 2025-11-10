@@ -1,14 +1,15 @@
-import { ShoppingBag, Heart, User, Search, Menu, LogOut, ChevronDown, ChevronRight, UserCircle, Package, ListOrdered } from "lucide-react";
+import { ShoppingBag, Heart, User, Search, Menu, LogOut, ChevronDown, ChevronRight, UserCircle, Package, ListOrdered, X } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import instagramIcon from "@assets/instagram_1762445939344.png";
 import facebookIcon from "@assets/communication_1762445935759.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect, type MouseEvent } from "react";
+import { useState, useEffect, useRef, type MouseEvent } from "react";
 import { useLocation, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,6 +90,10 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
   const [storageUpdateTrigger, setStorageUpdateTrigger] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [showCategoryResults, setShowCategoryResults] = useState(false);
+  const [filteredCategories, setFilteredCategories] = useState<typeof categoryConfig>([]);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   // Parse URL to determine active navigation state
   const getActiveNavState = () => {
@@ -197,6 +202,30 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
     };
   }, []);
 
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const matches = categoryConfig.filter(category =>
+        category.title.toLowerCase().includes(searchQuery.toLowerCase().trim())
+      );
+      setFilteredCategories(matches);
+      setShowCategoryResults(true);
+    } else {
+      setShowCategoryResults(false);
+      setFilteredCategories([]);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowCategoryResults(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -290,16 +319,69 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
           </div>
 
           <div className="flex items-center justify-end gap-6">
-            <div className="hidden md:flex items-center relative">
-              <Search className="absolute left-4 h-6 w-6 text-gray-400" />
+            <div className="hidden md:flex items-center relative" ref={searchRef}>
+              <Search className="absolute left-4 h-6 w-6 text-gray-400 z-10" />
               <Input
                 type="search"
-                placeholder="Search..."
+                placeholder="Search categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-6 py-3 w-80 text-base bg-gray-50 border-gray-200 rounded-full focus:bg-white transition-colors"
+                className="pl-12 pr-12 py-3 w-80 text-base bg-gray-50 border-gray-200 rounded-full focus:bg-white transition-colors"
                 data-testid="input-search"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setShowCategoryResults(false);
+                  }}
+                  className="absolute right-4 h-6 w-6 text-gray-400 hover:text-gray-600 z-10"
+                  aria-label="Clear search"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
+
+              {showCategoryResults && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-2xl border-2 border-gray-100 z-50 max-h-96 overflow-y-auto">
+                  <div className="p-2">
+                    {filteredCategories.length > 0 ? (
+                      <>
+                        <p className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                          Categories ({filteredCategories.length})
+                        </p>
+                        {filteredCategories.map((category) => (
+                          <button
+                            key={category.slug}
+                            onClick={() => {
+                              setLocation(`/products?category=${encodeURIComponent(category.slug)}`);
+                              setSearchQuery("");
+                              setShowCategoryResults(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-3 py-3 hover:bg-accent rounded-md transition-colors text-left"
+                            data-testid={`search-result-${category.slug.toLowerCase().replace(/\s+/g, '-')}`}
+                          >
+                            <div className="flex-1">
+                              <p className="font-semibold text-sm">{category.title}</p>
+                              <p className="text-xs text-muted-foreground">View all products</p>
+                            </div>
+                            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                          </button>
+                        ))}
+                      </>
+                    ) : (
+                      <div className="px-3 py-6 text-center">
+                        <p className="text-sm font-semibold text-muted-foreground mb-1">
+                          No matching category found
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Please try again with a different search term
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {user ? (
@@ -311,47 +393,47 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
                   align="end" 
-                  className="w-56 rounded-md shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2"
+                  className="w-64 rounded-lg shadow-2xl border-2 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2"
                 >
-                  <div className="px-3 py-2.5 border-b">
-                    <p className="text-sm font-semibold text-foreground">
+                  <div className="px-4 py-3 border-b bg-muted/50">
+                    <p className="text-base font-bold text-foreground">
                       {user.name?.split(' ').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                     </p>
                   </div>
-                  <div className="py-1">
+                  <div className="py-2">
                     <DropdownMenuItem 
                       onClick={() => setLocation("/profile")} 
-                      className="cursor-pointer"
+                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
                       data-testid="menu-profile"
                     >
-                      <UserCircle className="h-4 w-4 mr-3" />
+                      <UserCircle className="h-5 w-5 mr-3" />
                       <span>My Profile</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => setLocation("/orders")} 
-                      className="cursor-pointer"
+                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
                       data-testid="menu-orders"
                     >
-                      <Package className="h-4 w-4 mr-3" />
+                      <Package className="h-5 w-5 mr-3" />
                       <span>My Orders</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => setLocation("/wishlist")} 
-                      className="cursor-pointer"
+                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
                       data-testid="menu-wishlist"
                     >
-                      <Heart className="h-4 w-4 mr-3" />
+                      <Heart className="h-5 w-5 mr-3" />
                       <span>My Wishlist</span>
                     </DropdownMenuItem>
                   </div>
                   <DropdownMenuSeparator />
-                  <div className="py-1">
+                  <div className="py-2">
                     <DropdownMenuItem 
                       onClick={handleLogout} 
-                      className="cursor-pointer text-destructive focus:text-destructive"
+                      className="cursor-pointer px-4 py-3 text-base font-semibold text-destructive focus:text-destructive transition-all duration-200 hover:pl-6 focus:bg-destructive/10"
                       data-testid="menu-logout"
                     >
-                      <LogOut className="h-4 w-4 mr-3" />
+                      <LogOut className="h-5 w-5 mr-3" />
                       <span>Logout</span>
                     </DropdownMenuItem>
                   </div>

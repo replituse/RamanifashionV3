@@ -1,0 +1,86 @@
+Task: Improve UI/UX and fix routing logic for admin, category hover design, profile dropdown styling, and search filter in existing eCommerce project.
+
+1️⃣ Admin Login Redirection Fix
+
+When someone manually enters /admin in the URL:
+
+It should properly open the Admin Login Page.
+
+After entering mobile number and completing mobile verification, redirect the user directly to the Admin Dashboard (not to the user login page).
+
+Ensure that only verified admin users can access the admin panel.
+
+If a normal user tries to access /admin, show an “Access Denied” or “Unauthorized” message and redirect to home.
+
+2️⃣ Categories Section UI Redesign (Homepage)
+
+Refer to the uploaded first and second images:
+
+Replace the existing card-based category layout (first image) with a horizontal section like in the second image.
+
+Show 7 categories in a single line with circular frames or decorative borders and one background image behind all.
+
+On hover, show a smooth zoom or glow effect and category name below each image.
+
+Must be responsive and maintain same alignment across all devices.
+
+3️⃣ Profile Dropdown Styling (See 3rd Image)
+
+Increase font size of “My Profile”, “My Orders”, “My Wishlist”, and “Logout”.
+
+Use clean, modern, slightly bold typography with a subtle hover animation (e.g., text color change or underline).
+
+Add a small drop shadow or soft background to make the dropdown more visible and elegant.
+
+Ensure hover effects and font styling are consistent with website theme colors.
+
+4️⃣ Scroll to Top (Arrow) Button
+
+Add a “Go to Top” arrow button in the bottom-left corner.
+
+Button should:
+
+Follow the website’s color theme (example: gold, maroon, or beige tones).
+
+Be rounded with a smooth hover animation.
+
+Only appear when the user scrolls down.
+
+Scroll smoothly to top when clicked.
+
+5️⃣ Search Filter Enhancement (Category Search)
+
+Make the search filter fully functional for saree categories.
+
+When user types in the search box:
+
+Show real-time category matches (autocomplete or filter results).
+
+If no match is found, show a popup/toast message saying:
+
+“No matching category found. Please try again.”
+
+Ensure it works for partial matches (e.g., typing “Jam” should match “Jamdani Paithani”).
+
+🧭 Notes:
+
+Follow clean, responsive, and professional UI design standards.
+
+Maintain same color theme, typography, and animations as the rest of the site.
+
+Ensure all functions work across desktop and mobile.
+
+Test all redirections and hover effects before final deployment.
+
+✅ Expected Output:
+A fully functional and visually refined saree eCommerce site with:
+
+Correct admin redirection and access control
+
+Elegant horizontal category hover layout
+
+Enhanced profile dropdown
+
+Smooth “Scroll to Top” feature
+
+Working search filter with feedback

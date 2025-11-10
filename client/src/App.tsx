@@ -4,6 +4,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ScrollToTop from "@/components/ScrollToTop";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
 import Home from "@/pages/Home";
 import Products from "@/pages/Products";
 import ProductDetail from "@/pages/ProductDetail";
@@ -47,11 +49,31 @@ function Router() {
       <Route path="/orders" component={Orders} />
       <Route path="/wishlist" component={Wishlist} />
       <Route path="/admin" component={Admin} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
-      <Route path="/admin/products" component={ProductManagement} />
-      <Route path="/admin/inventory" component={InventoryManagement} />
-      <Route path="/admin/analytics" component={Analytics} />
-      <Route path="/admin/settings" component={Settings} />
+      <Route path="/admin/dashboard">
+        <ProtectedAdminRoute>
+          <AdminDashboard />
+        </ProtectedAdminRoute>
+      </Route>
+      <Route path="/admin/products">
+        <ProtectedAdminRoute>
+          <ProductManagement />
+        </ProtectedAdminRoute>
+      </Route>
+      <Route path="/admin/inventory">
+        <ProtectedAdminRoute>
+          <InventoryManagement />
+        </ProtectedAdminRoute>
+      </Route>
+      <Route path="/admin/analytics">
+        <ProtectedAdminRoute>
+          <Analytics />
+        </ProtectedAdminRoute>
+      </Route>
+      <Route path="/admin/settings">
+        <ProtectedAdminRoute>
+          <Settings />
+        </ProtectedAdminRoute>
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
@@ -62,6 +84,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <ScrollToTop />
+        <ScrollToTopButton />
         <Toaster />
         <Router />
       </TooltipProvider>
