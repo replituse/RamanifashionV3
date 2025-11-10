@@ -132,6 +132,16 @@ const contactSubmissionSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+// Admin User Schema
+const adminUserSchema = new Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  mobile: { type: String, required: true },
+  otp: { type: String },
+  otpExpiresAt: { type: Date },
+  createdAt: { type: Date, default: Date.now },
+});
+
 // Export models
 export const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 export const User = mongoose.models.User || mongoose.model('User', userSchema);
@@ -141,3 +151,4 @@ export const Wishlist = mongoose.models.Wishlist || mongoose.model('Wishlist', w
 export const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 export const ContactSubmission = mongoose.models.ContactSubmission || mongoose.model('ContactSubmission', contactSubmissionSchema);
 export const OTP = mongoose.models.OTP || mongoose.model('OTP', otpSchema);
+export const AdminUser = mongoose.models.AdminUser || mongoose.model('AdminUser', adminUserSchema);

@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { connectDB } from "./db";
-import { Product, User, Cart, Wishlist, Order, Address, ContactSubmission, OTP } from "./models";
+import { Product, User, Cart, Wishlist, Order, Address, ContactSubmission, OTP, AdminUser } from "./models";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import multer from "multer";
@@ -374,6 +374,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: 'User not found' });
       }
       res.json(user);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin Authentication Routes
+  app.post("/api/admin/auth/start", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+
+      const admin = await AdminUser.findOne({ email });
+      if (!admin) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+
+      // Generate OTP
+      const otp = '123456';
+      const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+      admin.otp = otp;
+      admin.otpExpiresAt = otpExpiresAt;
+      await admin.save();
+
+      // Mask mobile number
+      const maskedMobile = admin.mobile.replace(/(\d{2})\d+(\d{2})/, '$1*******$2');
+
+      res.json({ 
+        message: 'Credentials verified. OTP sent to registered mobile.',
+        maskedMobile,
+        otp
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/auth/verify", async (req, res) => {
+    try {
+      const { email, otp } = req.body;
+
+      if (!email || !otp) {
+        return res.status(400).json({ error: 'Email and OTP are required' });
+      }
+
+      const admin = await AdminUser.findOne({ email });
+      if (!admin) {
+        return res.status(401).json({ error: 'Admin not found' });
+      }
+
+      if (!admin.otp || !admin.otpExpiresAt) {
+        return res.status(400).json({ error: 'OTP not requested or expired' });
+      }
+
+      if (new Date() > admin.otpExpiresAt) {
+        admin.otp = undefined;
+        admin.otpExpiresAt = undefined;
+        await admin.save();
+        return res.status(400).json({ error: 'OTP expired. Please request a new one.' });
+      }
+
+      if (admin.otp !== otp) {
+        return res.status(401).json({ error: 'Incorrect OTP' });
+      }
+
+      // Clear OTP after successful verification
+      admin.otp = undefined;
+      admin.otpExpiresAt = undefined;
+      await admin.save();
+
+      // Generate JWT token
+      const token = jwt.sign(
+        { adminId: admin._id, email: admin.email, role: 'admin' },
+        ADMIN_JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+
+      res.json({
+        message: 'Login successful',
+        token,
+        admin: {
+          id: admin._id,
+          email: admin.email,
+          mobile: admin.mobile
+        }
+      });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

@@ -1,4 +1,4 @@
-import { ShoppingBag, Heart, User, Search, Menu, LogOut, ChevronDown, ChevronRight } from "lucide-react";
+import { ShoppingBag, Heart, User, Search, Menu, LogOut, ChevronDown, ChevronRight, UserCircle, Package, ListOrdered } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import instagramIcon from "@assets/instagram_1762445939344.png";
 import facebookIcon from "@assets/communication_1762445935759.png";
@@ -35,6 +35,46 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import logoImage from "@assets/PNG__B_ LOGO_1762442171742.png";
+import longDressImg from "@assets/image_1762753411546.png";
+
+// Category configuration with images
+const categoryConfig = [
+  {
+    title: "Jamdani Paithani",
+    slug: "Jamdani Paithani",
+    image: longDressImg,
+  },
+  {
+    title: "Khun / Irkal (Ilkal)",
+    slug: "Khun Irkal",
+    image: longDressImg,
+  },
+  {
+    title: "Ajrakh Modal",
+    slug: "Ajrakh Modal",
+    image: longDressImg,
+  },
+  {
+    title: "Mul Mul Cotton",
+    slug: "Mul Mul Cotton",
+    image: longDressImg,
+  },
+  {
+    title: "Khadi Cotton",
+    slug: "Khadi Cotton",
+    image: longDressImg,
+  },
+  {
+    title: "Patch Work",
+    slug: "Patch Work",
+    image: longDressImg,
+  },
+  {
+    title: "Pure Linen",
+    slug: "Pure Linen",
+    image: longDressImg,
+  },
+];
 
 interface HeaderProps {
   cartCount?: number;
@@ -269,25 +309,52 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
                     <User className="h-8 w-8" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <div className="px-2 py-1.5 text-sm font-semibold">
-                    {user.name}
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-56 rounded-md shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2"
+                >
+                  <div className="px-3 py-2.5 border-b">
+                    <p className="text-sm font-semibold text-foreground">
+                      {user.name?.split(' ').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
+                    </p>
+                  </div>
+                  <div className="py-1">
+                    <DropdownMenuItem 
+                      onClick={() => setLocation("/profile")} 
+                      className="cursor-pointer"
+                      data-testid="menu-profile"
+                    >
+                      <UserCircle className="h-4 w-4 mr-3" />
+                      <span>My Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => setLocation("/orders")} 
+                      className="cursor-pointer"
+                      data-testid="menu-orders"
+                    >
+                      <Package className="h-4 w-4 mr-3" />
+                      <span>My Orders</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => setLocation("/wishlist")} 
+                      className="cursor-pointer"
+                      data-testid="menu-wishlist"
+                    >
+                      <Heart className="h-4 w-4 mr-3" />
+                      <span>My Wishlist</span>
+                    </DropdownMenuItem>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setLocation("/profile")} data-testid="menu-profile">
-                    My Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLocation("/orders")} data-testid="menu-orders">
-                    My Orders
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLocation("/wishlist")} data-testid="menu-wishlist">
-                    My Wishlist
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} data-testid="menu-logout">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Logout
-                  </DropdownMenuItem>
+                  <div className="py-1">
+                    <DropdownMenuItem 
+                      onClick={handleLogout} 
+                      className="cursor-pointer text-destructive focus:text-destructive"
+                      data-testid="menu-logout"
+                    >
+                      <LogOut className="h-4 w-4 mr-3" />
+                      <span>Logout</span>
+                    </DropdownMenuItem>
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
@@ -362,73 +429,31 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
                 >
                   CATEGORIES
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className="bg-white">
-                  <div className="w-[250px] p-3">
-                    <ul className="grid gap-2">
-                      <li>
+                <NavigationMenuContent className="bg-white data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2">
+                  <div className="w-[800px] p-6">
+                    <div className="grid grid-cols-4 gap-4">
+                      {categoryConfig.map((category) => (
                         <Link
-                          href="/products?category=Jamdani Paithani"
-                          className="block select-none border border-black p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100"
-                          data-testid="category-jamdani-paithani"
+                          key={category.slug}
+                          href={`/products?category=${encodeURIComponent(category.slug)}`}
+                          className="group block select-none rounded-md overflow-hidden border border-gray-200 hover-elevate transition-all"
+                          data-testid={`category-${category.slug.toLowerCase().replace(/\s+/g, '-')}`}
                         >
-                          <div className="text-sm font-medium leading-none text-black">Jamdani Paithani</div>
+                          <div className="aspect-[3/4] overflow-hidden">
+                            <img 
+                              src={category.image} 
+                              alt={category.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                          <div className="p-3 bg-white">
+                            <p className="text-sm font-medium text-center text-foreground leading-tight">
+                              {category.title}
+                            </p>
+                          </div>
                         </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/products?category=Khun Irkal"
-                          className="block select-none border border-black p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100"
-                          data-testid="category-khun-irkal"
-                        >
-                          <div className="text-sm font-medium leading-none text-black">Khun / Irkal (Ilkal)</div>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/products?category=Ajrakh Modal"
-                          className="block select-none border border-black p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100"
-                          data-testid="category-ajrakh-modal"
-                        >
-                          <div className="text-sm font-medium leading-none text-black">Ajrakh Modal</div>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/products?category=Mul Mul Cotton"
-                          className="block select-none border border-black p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100"
-                          data-testid="category-mul-mul-cotton"
-                        >
-                          <div className="text-sm font-medium leading-none text-black">Mul Mul Cotton</div>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/products?category=Khadi Cotton"
-                          className="block select-none border border-black p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100"
-                          data-testid="category-khadi-cotton"
-                        >
-                          <div className="text-sm font-medium leading-none text-black">Khadi Cotton</div>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/products?category=Patch Work"
-                          className="block select-none border border-black p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100"
-                          data-testid="category-patch-work"
-                        >
-                          <div className="text-sm font-medium leading-none text-black">Patch Work</div>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/products?category=Pure Linen"
-                          className="block select-none border border-black p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100"
-                          data-testid="category-pure-linen"
-                        >
-                          <div className="text-sm font-medium leading-none text-black">Pure Linen</div>
-                        </Link>
-                      </li>
-                    </ul>
+                      ))}
+                    </div>
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>

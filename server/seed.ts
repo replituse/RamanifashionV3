@@ -1,5 +1,6 @@
 import { connectDB } from './db';
-import { Product } from './models';
+import { Product, AdminUser } from './models';
+import bcrypt from 'bcryptjs';
 
 const sampleProducts = [
   {
@@ -543,6 +544,21 @@ export async function seedDatabase() {
       console.log('✅ Database seeded successfully with', sampleProducts.length, 'products');
     } else {
       console.log(`✅ Database already contains ${count} products, skipping seed`);
+    }
+
+    // Seed admin user
+    const adminCount = await AdminUser.countDocuments();
+    if (adminCount === 0) {
+      console.log('🌱 Seeding admin user...');
+      const hashedPassword = await bcrypt.hash('pk@123', 10);
+      await AdminUser.create({
+        email: 'pratikkadam@gmail.com',
+        password: hashedPassword,
+        mobile: '7304707775',
+      });
+      console.log('✅ Admin user seeded successfully');
+    } else {
+      console.log(`✅ Admin user already exists, skipping seed`);
     }
   } catch (error) {
     console.error('❌ Error seeding database:', error);
