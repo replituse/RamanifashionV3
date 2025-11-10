@@ -1,0 +1,130 @@
+Goal:
+Improve admin login/signup flow and redesign key front-end UI sections for smoother experience and professional look.
+
+1️⃣ Admin Login & Signup System (with OTP Verification)
+
+Requirements:
+
+Add a new button on the main login popup or user icon dropdown — label it “Login as Admin”.
+
+When clicked:
+
+Open a separate Admin Login Form (similar style as user login).
+
+Fields: Email, Password, and Verify with Mobile Number.
+
+When admin exists in database → allow login after temporary OTP verification (e.g. 123456).
+
+If admin does not exist, show an option/button “Sign Up as Admin” to register a new admin account.
+
+After successful login or signup, redirect to the Admin Dashboard — not user login or homepage.
+
+Credentials to test:
+
+Email: admin@ramanifashion.com
+
+Password: Admin@123
+
+OTP: 123456
+
+Additional Requirements:
+
+Store admin users in a separate DB collection/table (not mixed with normal users).
+
+Ensure OTP works via temp verification logic.
+
+Protect admin routes so only verified admins can access /admin and dashboard pages.
+
+2️⃣ Categories Hover Section Redesign (Use 2nd Uploaded Image as Reference)
+
+Requirements:
+
+Remove the old card-based category UI.
+
+Redesign it like shown in the 2nd uploaded image:
+
+All categories visible in one horizontal line (single row).
+
+Each category image inside a decorative circle frame.
+
+On hover:
+
+Show a smooth zoom or fade-in effect.
+
+Display category name below the image.
+
+Keep the design clean, simple, and elegant using brand color tones (beige/pink theme).
+
+Ensure full responsiveness for both desktop and mobile views.
+
+3️⃣ Hover Effect on Ramani Logo
+
+Requirements:
+
+Add a simple hover animation to the “Ramani Fashion” logo (top navbar).
+
+Effect example:
+
+Slight scale-up (1.05x) or brightness increase on hover.
+
+Smooth transition (0.3s ease-in-out).
+
+Keep it minimal and consistent with overall brand style.
+
+4️⃣ Category Circle Layout — 4 Above + 4 Below (See 3rd Uploaded Image)
+
+Requirements:
+
+Recreate the section shown in the 3rd uploaded image:
+
+Display 8 circular category cards total.
+
+Arrange as:
+
+First 4 circles in the top row
+
+Remaining 4 circles in the bottom row
+
+Use same circular frame design and hover animation from the 2nd image style.
+
+Align perfectly centered with equal spacing and responsive grid behavior.
+
+5️⃣ Fix Image Cropping Inside Circles (See 4th Uploaded Image)
+
+Current Issue:
+Category/product images are cut off or not properly centered inside the circular frames.
+
+Fix Required:
+
+Ensure the image fits fully within the circle using proper CSS:
+
+object-fit: cover;
+object-position: center;
+border-radius: 50%;
+
+
+On hover, show a zoom-in effect but keep the image completely visible (not cropped).
+
+Maintain circular shape even on hover transition.
+
+🧭 Additional Notes
+
+Keep design fully responsive for all screen sizes.
+
+Maintain the existing Ramani Fashion color palette (mainly pink, beige, and white).
+
+Use smooth transitions and professional typography.
+
+Test both user and admin login flows thoroughly after implementation.
+
+✅ Expected Final Output:
+
+Separate Admin Login/Signup System with OTP verification and secure redirection to Admin Dashboard.
+
+Beautiful horizontal category hover section like the sample image.
+
+Elegant hover animation on Ramani logo.
+
+Perfectly aligned 8-category circular grid (4+4 layout).
+
+Properly fitted and responsive circle images without cropping.

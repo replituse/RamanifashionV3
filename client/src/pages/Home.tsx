@@ -4,6 +4,7 @@ import CategoryCard from "@/components/CategoryCard";
 import NewArrivalCard from "@/components/NewArrivalCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import HorizontalCategories from "@/components/HorizontalCategories";
+import CategoryGrid from "@/components/CategoryGrid";
 import Footer from "@/components/Footer";
 import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -404,6 +405,8 @@ export default function Home() {
         </motion.section>
 
         <HorizontalCategories categories={newCategories} />
+
+        <CategoryGrid categories={newCategories} />
 
         <motion.section 
           className="py-8 md:py-16" 

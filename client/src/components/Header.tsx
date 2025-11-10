@@ -312,7 +312,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
               <img 
                 src={logoImage}
                 alt="Ramani Fashion" 
-                className="h-16 md:h-18 lg:h-20 w-auto object-contain"
+                className="h-16 md:h-18 lg:h-20 w-auto object-contain transition-all duration-300 ease-in-out hover:scale-105 hover:brightness-110"
                 data-testid="img-logo"
               />
             </Link>
@@ -428,6 +428,14 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
                   </div>
                   <DropdownMenuSeparator />
                   <div className="py-2">
+                    <DropdownMenuItem 
+                      onClick={() => setLocation("/login?admin=true")} 
+                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
+                      data-testid="menu-admin-login"
+                    >
+                      <UserCircle className="h-5 w-5 mr-3" />
+                      <span>Login as Admin</span>
+                    </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={handleLogout} 
                       className="cursor-pointer px-4 py-3 text-base font-semibold text-destructive focus:text-destructive transition-all duration-200 hover:pl-6 focus:bg-destructive/10"
