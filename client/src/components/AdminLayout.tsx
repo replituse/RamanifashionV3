@@ -15,16 +15,16 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [location, setLocation] = useLocation();
-  const adminToken = localStorage.getItem("adminToken");
+  const adminToken = localStorage.getItem("admin_token");
 
   const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("admin");
-    setLocation("/login");
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_user");
+    setLocation("/admin");
   };
 
   if (!adminToken) {
-    setLocation("/login");
+    setLocation("/admin");
     return null;
   }
 
