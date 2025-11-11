@@ -473,6 +473,107 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin Signup Routes
+  app.post("/api/admin/signup/start", async (req, res) => {
+    try {
+      const { name, email, mobile, password } = req.body;
+
+      if (!name || !email || !mobile || !password) {
+        return res.status(400).json({ error: 'All fields are required' });
+      }
+
+      // Check if admin already exists
+      const existingAdmin = await AdminUser.findOne({ email });
+      if (existingAdmin) {
+        return res.status(400).json({ error: 'Admin with this email already exists' });
+      }
+
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Generate OTP
+      const otp = '123456'; // Dummy OTP for testing
+      const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+      // Create new admin user (pending verification)
+      const newAdmin = new AdminUser({
+        name,
+        email,
+        mobile,
+        password: hashedPassword,
+        otp,
+        otpExpiresAt
+      });
+
+      await newAdmin.save();
+
+      // Mask mobile number
+      const maskedMobile = mobile.replace(/(\d{2})\d+(\d{2})/, '$1*******$2');
+
+      res.json({
+        message: 'OTP sent to registered mobile number',
+        maskedMobile,
+        otp // For testing purposes only
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/signup/verify", async (req, res) => {
+    try {
+      const { email, otp } = req.body;
+
+      if (!email || !otp) {
+        return res.status(400).json({ error: 'Email and OTP are required' });
+      }
+
+      const admin = await AdminUser.findOne({ email });
+      if (!admin) {
+        return res.status(404).json({ error: 'Admin account not found' });
+      }
+
+      if (!admin.otp || !admin.otpExpiresAt) {
+        return res.status(400).json({ error: 'OTP not requested or expired' });
+      }
+
+      if (new Date() > admin.otpExpiresAt) {
+        // Clean up expired admin signup
+        await AdminUser.deleteOne({ email });
+        return res.status(400).json({ error: 'OTP expired. Please sign up again.' });
+      }
+
+      if (admin.otp !== otp) {
+        return res.status(401).json({ error: 'Incorrect OTP' });
+      }
+
+      // Clear OTP and mark as verified
+      admin.otp = undefined;
+      admin.otpExpiresAt = undefined;
+      await admin.save();
+
+      // Generate JWT token
+      const token = jwt.sign(
+        { adminId: admin._id, email: admin.email, role: 'admin' },
+        ADMIN_JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+
+      res.json({
+        message: 'Admin account created successfully',
+        token,
+        admin: {
+          id: admin._id,
+          name: admin.name,
+          email: admin.email,
+          mobile: admin.mobile
+        }
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Cart Routes
   app.get("/api/cart", authenticateToken, async (req, res) => {
     try {

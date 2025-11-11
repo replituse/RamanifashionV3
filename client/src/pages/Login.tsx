@@ -15,7 +15,6 @@ export default function Login() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [isRegister, setIsRegister] = useState(false);
-  const [isAdminLogin, setIsAdminLogin] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,32 +36,6 @@ export default function Login() {
     },
     onError: (error: any) => {
       toast({ title: "Error", description: error.message || "Invalid credentials", variant: "destructive" });
-    },
-  });
-
-  const adminLoginMutation = useMutation({
-    mutationFn: (data: any) => apiRequest("/api/admin/login", "POST", data),
-    onSuccess: (data: any) => {
-      localStorage.setItem("admin_token", data.token);
-      localStorage.setItem("admin_user", JSON.stringify(data.admin));
-      toast({ title: "Admin login successful!" });
-      setLocation("/admin/dashboard");
-    },
-    onError: (error: any) => {
-      toast({ title: "Error", description: error.message || "Invalid admin credentials", variant: "destructive" });
-    },
-  });
-
-  const adminSignupMutation = useMutation({
-    mutationFn: (data: any) => apiRequest("/api/admin/signup", "POST", data),
-    onSuccess: (data: any) => {
-      localStorage.setItem("admin_token", data.token);
-      localStorage.setItem("admin_user", JSON.stringify(data.admin));
-      toast({ title: "Admin signup successful!", description: "Welcome to the admin panel" });
-      setLocation("/admin/dashboard");
-    },
-    onError: (error: any) => {
-      toast({ title: "Error", description: error.message || "Signup failed", variant: "destructive" });
     },
   });
 
@@ -124,12 +97,7 @@ export default function Login() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (isAdminLogin) {
-      adminLoginMutation.mutate({ username: formData.email, password: formData.password });
-      return;
-    }
-
-    if (!otpVerified && !isAdminLogin) {
+    if (!otpVerified) {
       toast({ title: "Error", description: "Please verify your mobile number first", variant: "destructive" });
       return;
     }
@@ -155,17 +123,15 @@ export default function Login() {
         <Card>
           <CardHeader>
             <CardTitle>
-              {isAdminLogin ? "Admin Login" : (isRegister ? "Create Account" : "Welcome Back")}
+              {isRegister ? "Create Account" : "Welcome Back"}
             </CardTitle>
             <CardDescription>
-              {isAdminLogin 
-                ? "Sign in to access the admin panel" 
-                : (isRegister ? "Sign up to start shopping" : "Sign in to your account")}
+              {isRegister ? "Sign up to start shopping" : "Sign in to your account"}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {!isAdminLogin && isRegister && (
+              {isRegister && (
                 <div>
                   <Label htmlFor="name">Full Name</Label>
                   <Input
@@ -178,43 +144,41 @@ export default function Login() {
                 </div>
               )}
 
-              {!isAdminLogin && (
-                <div>
-                  <Label htmlFor="phone">Mobile Number</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="10-digit mobile number"
-                      value={formData.phone}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-                        setFormData(prev => ({ ...prev, phone: value, otp: '' }));
-                        setOtpSent(false);
-                        setOtpVerified(false);
-                      }}
-                      required
-                      disabled={otpVerified}
-                      autoComplete="off"
-                      inputMode="numeric"
-                      maxLength={10}
-                      data-testid="input-phone"
-                    />
-                    {!otpVerified && (
-                      <Button
-                        type="button"
-                        onClick={handleSendOtp}
-                        disabled={sendOtpMutation.isPending || !formData.phone}
-                        data-testid="button-send-otp"
-                      >
-                        {otpSent ? "Resend" : "Send OTP"}
-                      </Button>
-                    )}
-                  </div>
+              <div>
+                <Label htmlFor="phone">Mobile Number</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="10-digit mobile number"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                      setFormData(prev => ({ ...prev, phone: value, otp: '' }));
+                      setOtpSent(false);
+                      setOtpVerified(false);
+                    }}
+                    required
+                    disabled={otpVerified}
+                    autoComplete="off"
+                    inputMode="numeric"
+                    maxLength={10}
+                    data-testid="input-phone"
+                  />
+                  {!otpVerified && (
+                    <Button
+                      type="button"
+                      onClick={handleSendOtp}
+                      disabled={sendOtpMutation.isPending || !formData.phone}
+                      data-testid="button-send-otp"
+                    >
+                      {otpSent ? "Resend" : "Send OTP"}
+                    </Button>
+                  )}
                 </div>
-              )}
+              </div>
 
-              {!isAdminLogin && otpSent && !otpVerified && (
+              {otpSent && !otpVerified && (
                 <div>
                   <Label htmlFor="otp">Enter OTP</Label>
                   <div className="flex gap-2">
@@ -242,7 +206,7 @@ export default function Login() {
                 </div>
               )}
 
-              {!isAdminLogin && otpVerified && (
+              {otpVerified && (
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3">
                   <p className="text-sm text-green-700 dark:text-green-400 flex items-center gap-2">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,10 +218,10 @@ export default function Login() {
               )}
 
               <div>
-                <Label htmlFor="email">{isAdminLogin ? "Admin Username" : "Email"}</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
-                  type={isAdminLogin ? "text" : "email"}
+                  type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
@@ -280,54 +244,24 @@ export default function Login() {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={loginMutation.isPending || registerMutation.isPending || adminLoginMutation.isPending}
+                disabled={loginMutation.isPending || registerMutation.isPending}
                 data-testid="button-submit"
               >
-                {isAdminLogin ? "Admin Sign In" : (isRegister ? "Sign Up" : "Sign In")}
+                {isRegister ? "Sign Up" : "Sign In"}
               </Button>
 
-              {!isAdminLogin && (
-                <div className="text-center">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={() => {
-                      setIsRegister(!isRegister);
-                      resetOtpState();
-                    }}
-                    data-testid="button-toggle-mode"
-                  >
-                    {isRegister ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
-                  </Button>
-                </div>
-              )}
-
-              <div className="text-center pt-4 border-t space-y-2">
+              <div className="text-center">
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="ghost"
                   onClick={() => {
-                    setIsAdminLogin(!isAdminLogin);
-                    setIsRegister(false);
-                    setFormData({ name: "", email: "", password: "", phone: "", otp: "" });
+                    setIsRegister(!isRegister);
                     resetOtpState();
                   }}
-                  data-testid="button-admin-toggle"
-                  className="w-full"
+                  data-testid="button-toggle-mode"
                 >
-                  {isAdminLogin ? "Back to User Login" : "Login as Admin"}
+                  {isRegister ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
                 </Button>
-                {!isAdminLogin && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={() => setLocation("/admin")}
-                    data-testid="button-admin-signup"
-                    className="w-full text-sm"
-                  >
-                    Sign Up as Admin
-                  </Button>
-                )}
               </div>
             </form>
           </CardContent>
