@@ -18,6 +18,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
@@ -92,6 +98,7 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [showCategoryResults, setShowCategoryResults] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState<typeof categoryConfig>([]);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -385,68 +392,75 @@ export default function Header({ cartCount = 0, wishlistCount = 0, onMenuClick }
             </div>
 
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-12 w-12 hover:bg-gray-100" data-testid="button-account">
-                    <User className="h-8 w-8" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent 
-                  align="end" 
-                  className="w-64 rounded-lg shadow-2xl border-2 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2"
+              <>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-12 w-12 hover:bg-gray-100" 
+                  onClick={() => setProfileModalOpen(true)}
+                  data-testid="button-account"
                 >
-                  <div className="px-4 py-3 border-b bg-muted/50">
-                    <p className="text-base font-bold text-foreground">
-                      {user.name?.split(' ').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
-                    </p>
-                  </div>
-                  <div className="py-2">
-                    <DropdownMenuItem 
-                      onClick={() => setLocation("/profile")} 
-                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
-                      data-testid="menu-profile"
-                    >
-                      <UserCircle className="h-5 w-5 mr-3" />
-                      <span>My Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => setLocation("/orders")} 
-                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
-                      data-testid="menu-orders"
-                    >
-                      <Package className="h-5 w-5 mr-3" />
-                      <span>My Orders</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => setLocation("/wishlist")} 
-                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
-                      data-testid="menu-wishlist"
-                    >
-                      <Heart className="h-5 w-5 mr-3" />
-                      <span>My Wishlist</span>
-                    </DropdownMenuItem>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <div className="py-2">
-                    <DropdownMenuItem 
-                      onClick={() => setLocation("/login?admin=true")} 
-                      className="cursor-pointer px-4 py-3 text-base font-semibold transition-all duration-200 hover:pl-6 focus:bg-accent/50"
-                      data-testid="menu-admin-login"
-                    >
-                      <UserCircle className="h-5 w-5 mr-3" />
-                      <span>Login as Admin</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={handleLogout} 
-                      className="cursor-pointer px-4 py-3 text-base font-semibold text-destructive focus:text-destructive transition-all duration-200 hover:pl-6 focus:bg-destructive/10"
-                      data-testid="menu-logout"
-                    >
-                      <LogOut className="h-5 w-5 mr-3" />
-                      <span>Logout</span>
-                    </DropdownMenuItem>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  <User className="h-8 w-8" />
+                </Button>
+                
+                <Dialog open={profileModalOpen} onOpenChange={setProfileModalOpen}>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-bold text-center">
+                        {user.name?.split(' ').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-2 py-4">
+                      <button
+                        onClick={() => {
+                          setLocation("/profile");
+                          setProfileModalOpen(false);
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-md hover-elevate active-elevate-2 transition-all duration-200 text-left"
+                        data-testid="menu-profile"
+                      >
+                        <UserCircle className="h-4 w-4" />
+                        <span className="text-sm font-medium">My Profile</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setLocation("/orders");
+                          setProfileModalOpen(false);
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-md hover-elevate active-elevate-2 transition-all duration-200 text-left"
+                        data-testid="menu-orders"
+                      >
+                        <Package className="h-4 w-4" />
+                        <span className="text-sm font-medium">My Orders</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setLocation("/wishlist");
+                          setProfileModalOpen(false);
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-md hover-elevate active-elevate-2 transition-all duration-200 text-left"
+                        data-testid="menu-wishlist"
+                      >
+                        <Heart className="h-4 w-4" />
+                        <span className="text-sm font-medium">My Wishlist</span>
+                      </button>
+                      <div className="pt-2 mt-2 border-t">
+                        <button
+                          onClick={() => {
+                            handleLogout();
+                            setProfileModalOpen(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 rounded-md hover-elevate active-elevate-2 transition-all duration-200 text-left text-destructive"
+                          data-testid="menu-logout"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          <span className="text-sm font-medium">Logout</span>
+                        </button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </>
             ) : (
               <Button variant="ghost" size="icon" className="h-12 w-12 hover:bg-gray-100" onClick={() => setLocation("/login")} data-testid="button-login">
                 <User className="h-8 w-8" />

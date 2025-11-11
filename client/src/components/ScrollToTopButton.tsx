@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 
 export default function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
+  const [location] = useLocation();
+  
+  const isAdminPage = location.startsWith("/admin");
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -24,6 +28,10 @@ export default function ScrollToTopButton() {
       behavior: "smooth",
     });
   };
+
+  if (isAdminPage) {
+    return null;
+  }
 
   return (
     <>

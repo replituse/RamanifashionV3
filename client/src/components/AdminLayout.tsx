@@ -20,7 +20,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
     localStorage.removeItem("admin_user");
-    setLocation("/admin");
+    setLocation("/");
   };
 
   if (!adminToken) {
