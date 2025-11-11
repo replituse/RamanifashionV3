@@ -1,75 +1,13 @@
-import { Link, useLocation } from "wouter";
+import AdminLayout from "@/components/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { 
-  LayoutDashboard, 
-  Package, 
-  Warehouse, 
-  BarChart3, 
-  Settings,
-  LogOut
-} from "lucide-react";
 
 export default function AdminSettings() {
-  const [location, setLocation] = useLocation();
-  const adminToken = localStorage.getItem("adminToken");
-
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("admin");
-    setLocation("/login");
-  };
-
-  if (!adminToken) {
-    setLocation("/login");
-    return null;
-  }
-
-  const menuItems = [
-    { path: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { path: "/admin/products", label: "Products", icon: Package },
-    { path: "/admin/inventory", label: "Inventory", icon: Warehouse },
-    { path: "/admin/analytics", label: "Analytics", icon: BarChart3 },
-    { path: "/admin/settings", label: "Settings", icon: Settings },
-  ];
-
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 fixed h-full">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Ramani Admin</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Fashion Management</p>
-        </div>
-        
-        <nav className="px-4 space-y-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location === item.path;
-            return (
-              <Link key={item.path} href={item.path}>
-                <Button
-                  variant={isActive ? "secondary" : "ghost"}
-                  className="w-full justify-start"
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  {item.label}
-                </Button>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="absolute bottom-0 w-64 p-4">
-          <Button variant="outline" className="w-full justify-start" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
-        </div>
-      </aside>
-
-      <main className="ml-64 flex-1 p-8">
+    <AdminLayout>
+      <div className="p-6">
         <div className="max-w-4xl">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white" data-testid="text-page-title">
@@ -166,7 +104,7 @@ export default function AdminSettings() {
             </Card>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
