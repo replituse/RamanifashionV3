@@ -28,8 +28,7 @@ import { Search, Edit } from "lucide-react";
 
 export default function InventoryManagement() {
   const { toast } = useToast();
-  const [location, setLocation] = useLocation();
-  const adminToken = localStorage.getItem("adminToken");
+  const adminToken = localStorage.getItem("admin_token");
 
   // Search, sort, and filter state
   const [searchQuery, setSearchQuery] = useState("");
@@ -140,11 +139,6 @@ export default function InventoryManagement() {
   const totalProducts = inventory?.length || 0;
   const lowStockProducts = inventory?.filter((p: any) => (p.stockQuantity || 0) < 10 && (p.stockQuantity || 0) > 0 && p.inStock) || [];
   const outOfStockProducts = inventory?.filter((p: any) => !p.inStock || (p.stockQuantity || 0) === 0) || [];
-
-  if (!adminToken) {
-    setLocation("/login");
-    return null;
-  }
 
   return (
     <AdminLayout>

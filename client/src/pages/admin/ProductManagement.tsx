@@ -35,10 +35,9 @@ import {
 
 export default function ProductManagement() {
   const { toast } = useToast();
-  const [location, setLocation] = useLocation();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
-  const adminToken = localStorage.getItem("adminToken");
+  const adminToken = localStorage.getItem("admin_token");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const excelImportRef = useRef<HTMLInputElement>(null);
 
@@ -447,11 +446,6 @@ export default function ProductManagement() {
     const cats = new Set(products.map((p: any) => p.category).filter(Boolean));
     return Array.from(cats);
   }, [products]);
-
-  if (!adminToken) {
-    setLocation("/login");
-    return null;
-  }
 
   return (
     <AdminLayout>
