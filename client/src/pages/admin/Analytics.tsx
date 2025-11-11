@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useLocation } from "wouter";
+import AdminLayout from "@/components/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -11,16 +10,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { 
-  LayoutDashboard, 
-  Package, 
-  Warehouse, 
-  BarChart3, 
-  Settings,
-  LogOut,
   Users,
   ShoppingBag,
-  TrendingUp,
-  Heart,
   ArrowUpRight,
   IndianRupee
 } from "lucide-react";
@@ -39,8 +30,7 @@ import {
 } from "recharts";
 
 export default function Analytics() {
-  const [location, setLocation] = useLocation();
-  const adminToken = localStorage.getItem("adminToken");
+  const adminToken = localStorage.getItem("admin_token");
 
   const { data: customers, isLoading: loadingCustomers } = useQuery({
     queryKey: ["/api/admin/customers"],
@@ -51,25 +41,6 @@ export default function Analytics() {
     queryKey: ["/api/admin/orders"],
     enabled: !!adminToken
   });
-
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("admin");
-    setLocation("/login");
-  };
-
-  if (!adminToken) {
-    setLocation("/login");
-    return null;
-  }
-
-  const menuItems = [
-    { path: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { path: "/admin/products", label: "Products", icon: Package },
-    { path: "/admin/inventory", label: "Inventory", icon: Warehouse },
-    { path: "/admin/analytics", label: "Analytics", icon: BarChart3 },
-    { path: "/admin/settings", label: "Settings", icon: Settings },
-  ];
 
   // Sample data for customer growth chart
   const customerGrowth = [
@@ -96,55 +67,8 @@ export default function Analytics() {
     : 0;
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-pink-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Sidebar */}
-      <aside className="w-72 bg-white dark:bg-gray-800 border-r border-pink-100 dark:border-gray-700 fixed h-full shadow-lg">
-        <div className="p-6 border-b border-pink-100 dark:border-gray-700">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
-              <span className="text-white font-bold text-xl">R</span>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-pink-500 bg-clip-text text-transparent">
-                Ramani Admin
-              </h1>
-              <p className="text-xs text-muted-foreground">Fashion Management</p>
-            </div>
-          </div>
-        </div>
-        
-        <nav className="px-4 py-6 space-y-1">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location === item.path;
-            return (
-              <Link key={item.path} href={item.path}>
-                <Button
-                  variant={isActive ? "default" : "ghost"}
-                  className={`w-full justify-start ${isActive ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white hover:from-pink-600 hover:to-pink-700' : 'hover:bg-pink-50 dark:hover:bg-gray-700'}`}
-                >
-                  <Icon className="mr-3 h-4 w-4" />
-                  {item.label}
-                </Button>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="absolute bottom-0 w-72 p-4 border-t border-pink-100 dark:border-gray-700 bg-white dark:bg-gray-800">
-          <Button
-            variant="outline"
-            className="w-full justify-start border-pink-200 hover:bg-pink-50 hover:border-pink-300 dark:border-gray-600 dark:hover:bg-gray-700"
-            onClick={handleLogout}
-          >
-            <LogOut className="mr-3 h-4 w-4 text-pink-600 dark:text-pink-400" />
-            <span>Logout</span>
-          </Button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="ml-72 flex-1 p-8">
+    <AdminLayout>
+      <div className="p-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
@@ -391,7 +315,7 @@ export default function Analytics() {
             </>
           )}
         </div>
-      </main>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
