@@ -1,0 +1,75 @@
+Admin Dashboard Fixes & UI Improvements
+(A) Admin Dashboard / Panel Fixes
+
+1. Remove Floating Up Arrow Button:
+
+In the admin panel (see uploaded 1st image), remove the up arrow floating button permanently.
+
+Ensure the layout and alignment remain consistent after removal.
+
+2. Prevent Redirect to User Login on Internal Admin Navigation:
+
+Currently, when clicking on sidebar items like Products, Inventory, Analytics, or Settings, the system redirects to the user login page — fix this issue.
+
+Admin should stay inside the admin dashboard environment (e.g., /admin/dashboard, /admin/inventory, /admin/settings) without being redirected.
+
+Ensure all admin pages open within the same admin layout and retain sidebar + header.
+
+If session expires, only then redirect to /admin (admin login).
+
+Confirm all admin routes are protected by admin authentication middleware (e.g., verifyAdminAuth).
+
+3. Logout Redirection:
+
+When the Logout button is clicked inside the admin dashboard,
+→ clear admin session/token,
+→ then redirect to homepage (e.g., /),
+→ not to user login or admin login page.
+
+(B) User Profile Popup & Admin Button Removal
+
+1. Remove “Login as Admin” Option:
+
+In the user profile dropdown (see 2nd uploaded image), remove the “Login as Admin” option completely.
+
+This should not appear for any user.
+
+2. Improve User Profile Popup Design:
+
+When the user clicks on the profile icon, open a modern popup/modal (instead of dropdown) with smooth animation.
+
+Keep design clean and minimal — matching the theme of your project.
+
+Adjust typography:
+
+Decrease text size slightly for My Profile, My Orders, and My Wishlist.
+
+Maintain proper spacing and consistent icons.
+
+Developer Notes / Implementation Guidelines:
+
+Verify separate authentication sessions for user and admin to prevent cross-redirects.
+
+Maintain routing consistency:
+
+/admin/dashboard → Admin main panel
+
+/admin/inventory → Inventory management
+
+/admin/settings → Settings page
+
+Use route protection middleware to check for admin token before accessing admin pages.
+
+Use modal or React Portal for the user popup (if React-based frontend).
+
+Maintain consistent responsive behavior across desktop and mobile.
+
+✅ Expected Result After Implementation:
+
+Admin dashboard fully isolated and functional (no unwanted redirects).
+
+Admin logout returns to homepage only.
+
+Clean user profile popup with no “Login as Admin” button.
+
+Admin navigation works smoothly within the panel.
